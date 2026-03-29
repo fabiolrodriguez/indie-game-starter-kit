@@ -11,8 +11,13 @@ config_version=5
 [application]
 
 config/name="starter-kit"
+run/main_scene="uid://dua73ytgqhpdm"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+AudioManager="*uid://dt6ffye8uwn5s"
 
 [display]
 

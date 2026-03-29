@@ -1,0 +1,143 @@
+[gd_scene format=3 uid="uid://dua73ytgqhpdm"]
+
+[ext_resource type="Script" uid="uid://dq7wx6ueevh3e" path="res://scripts/main_menu.gd" id="1_5seab"]
+[ext_resource type="FontFile" uid="uid://b2ikk0lshckln" path="res://assets/fonts/PublicPixel-rv0pA.ttf" id="1_fsom3"]
+[ext_resource type="Texture2D" uid="uid://cgfe2rybuajqh" path="res://assets/textures/background/2.png" id="2_5seab"]
+[ext_resource type="Texture2D" uid="uid://dxnbktpwj7mw6" path="res://assets/textures/background/3.png" id="3_4xg86"]
+[ext_resource type="Texture2D" uid="uid://b2ggxfqi1v7f2" path="res://assets/textures/background/1.png" id="4_3ovsr"]
+[ext_resource type="Texture2D" uid="uid://ijvojrr57n0i" path="res://assets/textures/background/4.png" id="4_thkx5"]
+[ext_resource type="Script" uid="uid://dt6ffye8uwn5s" path="res://scripts/audio_manager.gd" id="6_3ovsr"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1b6gl"]
+bg_color = Color(0.9607843, 0.69411767, 0.19215687, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.9607843, 0.69411767, 0.19215687, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fsom3"]
+bg_color = Color(0.81343305, 0.5756461, 0.09114476, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0ebjn"]
+bg_color = Color(0.99469763, 0.8058638, 0.50832, 1)
+
+[node name="MainMenu" type="Node2D" unique_id=2068258826]
+script = ExtResource("1_5seab")
+
+[node name="Background" type="CanvasLayer" parent="." unique_id=1122845074]
+
+[node name="1" type="Sprite2D" parent="Background" unique_id=1791641294]
+position = Vector2(642, 361)
+scale = Vector2(2.229167, 2.2407408)
+texture = ExtResource("4_3ovsr")
+
+[node name="2" type="Sprite2D" parent="Background" unique_id=758473074]
+position = Vector2(639.49994, 359.5)
+scale = Vector2(2.2170138, 2.2314816)
+texture = ExtResource("2_5seab")
+
+[node name="3" type="Sprite2D" parent="Background" unique_id=816204756]
+position = Vector2(640.5, 359.5)
+scale = Vector2(2.2170138, 2.2314816)
+texture = ExtResource("3_4xg86")
+
+[node name="4" type="Sprite2D" parent="Background" unique_id=1371612137]
+position = Vector2(638.99994, 361)
+scale = Vector2(2.2291663, 2.2407408)
+texture = ExtResource("4_thkx5")
+
+[node name="menu" type="CanvasLayer" parent="." unique_id=1566337340]
+
+[node name="PanelContainer" type="PanelContainer" parent="menu" unique_id=777813401]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -108.4375
+offset_top = -59.875
+offset_right = 108.4375
+offset_bottom = 59.875
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="menu/PanelContainer" unique_id=1613353522]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="menu/PanelContainer/MarginContainer" unique_id=1245424222]
+layout_mode = 2
+
+[node name="start" type="Button" parent="menu/PanelContainer/MarginContainer/VBoxContainer" unique_id=862426001]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+theme_override_colors/font_hover_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+theme_override_fonts/font = ExtResource("1_fsom3")
+theme_override_styles/normal = SubResource("StyleBoxFlat_1b6gl")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_fsom3")
+theme_override_styles/hover = SubResource("StyleBoxFlat_0ebjn")
+text = "START GAME"
+
+[node name="load" type="Button" parent="menu/PanelContainer/MarginContainer/VBoxContainer" unique_id=1397168083]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+theme_override_colors/font_hover_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+theme_override_fonts/font = ExtResource("1_fsom3")
+theme_override_styles/normal = SubResource("StyleBoxFlat_1b6gl")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_fsom3")
+theme_override_styles/hover = SubResource("StyleBoxFlat_0ebjn")
+text = "LOAD GAME"
+
+[node name="settings" type="Button" parent="menu/PanelContainer/MarginContainer/VBoxContainer" unique_id=1908399796]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+theme_override_colors/font_hover_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+theme_override_fonts/font = ExtResource("1_fsom3")
+theme_override_styles/normal = SubResource("StyleBoxFlat_1b6gl")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_fsom3")
+theme_override_styles/hover = SubResource("StyleBoxFlat_0ebjn")
+text = "SETTINGS"
+
+[node name="controls" type="Button" parent="menu/PanelContainer/MarginContainer/VBoxContainer" unique_id=547700511]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+theme_override_colors/font_hover_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+theme_override_fonts/font = ExtResource("1_fsom3")
+theme_override_styles/normal = SubResource("StyleBoxFlat_1b6gl")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_fsom3")
+theme_override_styles/hover = SubResource("StyleBoxFlat_0ebjn")
+text = "CONTROLS"
+
+[node name="quit" type="Button" parent="menu/PanelContainer/MarginContainer/VBoxContainer" unique_id=376921350]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+theme_override_colors/font_hover_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+theme_override_fonts/font = ExtResource("1_fsom3")
+theme_override_styles/normal = SubResource("StyleBoxFlat_1b6gl")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_fsom3")
+theme_override_styles/hover = SubResource("StyleBoxFlat_0ebjn")
+text = "QUIT"
+
+[node name="AudioManager" type="Node" parent="." unique_id=501132004]
+script = ExtResource("6_3ovsr")
+
+[connection signal="focus_entered" from="menu/PanelContainer/MarginContainer/VBoxContainer/start" to="." method="_on_start_focus_entered"]
+[connection signal="mouse_entered" from="menu/PanelContainer/MarginContainer/VBoxContainer/start" to="." method="_on_start_mouse_entered"]
+[connection signal="pressed" from="menu/PanelContainer/MarginContainer/VBoxContainer/start" to="." method="_on_start_pressed"]
+[connection signal="focus_entered" from="menu/PanelContainer/MarginContainer/VBoxContainer/load" to="." method="_on_load_focus_entered"]
+[connection signal="mouse_entered" from="menu/PanelContainer/MarginContainer/VBoxContainer/load" to="." method="_on_load_mouse_entered"]
+[connection signal="pressed" from="menu/PanelContainer/MarginContainer/VBoxContainer/load" to="." method="_on_load_pressed"]
+[connection signal="focus_entered" from="menu/PanelContainer/MarginContainer/VBoxContainer/settings" to="." method="_on_settings_focus_entered"]
+[connection signal="mouse_entered" from="menu/PanelContainer/MarginContainer/VBoxContainer/settings" to="." method="_on_settings_mouse_entered"]
+[connection signal="pressed" from="menu/PanelContainer/MarginContainer/VBoxContainer/settings" to="." method="_on_settings_pressed"]
+[connection signal="focus_entered" from="menu/PanelContainer/MarginContainer/VBoxContainer/controls" to="." method="_on_controls_focus_entered"]
+[connection signal="mouse_entered" from="menu/PanelContainer/MarginContainer/VBoxContainer/controls" to="." method="_on_controls_mouse_entered"]
+[connection signal="pressed" from="menu/PanelContainer/MarginContainer/VBoxContainer/controls" to="." method="_on_controls_pressed"]
+[connection signal="focus_entered" from="menu/PanelContainer/MarginContainer/VBoxContainer/quit" to="." method="_on_quit_focus_entered"]
+[connection signal="mouse_entered" from="menu/PanelContainer/MarginContainer/VBoxContainer/quit" to="." method="_on_quit_mouse_entered"]
+[connection signal="pressed" from="menu/PanelContainer/MarginContainer/VBoxContainer/quit" to="." method="_on_quit_pressed"]
