@@ -39,7 +39,7 @@ Este repositório serve como ponto de partida para novos projetos do estúdio, e
 
 ## 📁 Estrutura do Projeto
 
-'''bash
+```
 res://
 ├ core/
 │ ├ managers/
@@ -68,4 +68,4 @@ res://
 │ └ textures/
 │
 └ scripts/
-'''
+```
