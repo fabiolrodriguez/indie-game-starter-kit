@@ -3,7 +3,7 @@ extends Node2D
 @onready var menu_panel = $menu/MainPanel
 @onready var settings_panel = $menu/SettingsPanel
 @onready var start_button = $menu/MainPanel/MarginContainer/VBoxContainer/start
-@onready var back_button = $menu/SettingsPanel/VBoxContainer/BackButton
+@onready var back_button = $menu/SettingsPanel/MarginContainer/VBoxContainer/BackButton
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
