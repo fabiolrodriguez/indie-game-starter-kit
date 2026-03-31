@@ -49,7 +49,7 @@ texture = ExtResource("4_thkx5")
 
 [node name="menu" type="CanvasLayer" parent="." unique_id=1566337340]
 
-[node name="PanelContainer" type="PanelContainer" parent="menu" unique_id=777813401]
+[node name="MainPanel" type="PanelContainer" parent="menu" unique_id=777813401]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -62,13 +62,13 @@ offset_bottom = 59.875
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="menu/PanelContainer" unique_id=1613353522]
+[node name="MarginContainer" type="MarginContainer" parent="menu/MainPanel" unique_id=1613353522]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="menu/PanelContainer/MarginContainer" unique_id=1245424222]
+[node name="VBoxContainer" type="VBoxContainer" parent="menu/MainPanel/MarginContainer" unique_id=1245424222]
 layout_mode = 2
 
-[node name="start" type="Button" parent="menu/PanelContainer/MarginContainer/VBoxContainer" unique_id=862426001]
+[node name="start" type="Button" parent="menu/MainPanel/MarginContainer/VBoxContainer" unique_id=862426001]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
@@ -79,7 +79,7 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_fsom3")
 theme_override_styles/hover = SubResource("StyleBoxFlat_0ebjn")
 text = "START GAME"
 
-[node name="load" type="Button" parent="menu/PanelContainer/MarginContainer/VBoxContainer" unique_id=1397168083]
+[node name="load" type="Button" parent="menu/MainPanel/MarginContainer/VBoxContainer" unique_id=1397168083]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
@@ -90,7 +90,7 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_fsom3")
 theme_override_styles/hover = SubResource("StyleBoxFlat_0ebjn")
 text = "LOAD GAME"
 
-[node name="settings" type="Button" parent="menu/PanelContainer/MarginContainer/VBoxContainer" unique_id=1908399796]
+[node name="settings" type="Button" parent="menu/MainPanel/MarginContainer/VBoxContainer" unique_id=1908399796]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
@@ -101,7 +101,7 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_fsom3")
 theme_override_styles/hover = SubResource("StyleBoxFlat_0ebjn")
 text = "SETTINGS"
 
-[node name="controls" type="Button" parent="menu/PanelContainer/MarginContainer/VBoxContainer" unique_id=547700511]
+[node name="controls" type="Button" parent="menu/MainPanel/MarginContainer/VBoxContainer" unique_id=547700511]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
@@ -112,7 +112,7 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_fsom3")
 theme_override_styles/hover = SubResource("StyleBoxFlat_0ebjn")
 text = "CONTROLS"
 
-[node name="quit" type="Button" parent="menu/PanelContainer/MarginContainer/VBoxContainer" unique_id=376921350]
+[node name="quit" type="Button" parent="menu/MainPanel/MarginContainer/VBoxContainer" unique_id=376921350]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
@@ -123,21 +123,65 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_fsom3")
 theme_override_styles/hover = SubResource("StyleBoxFlat_0ebjn")
 text = "QUIT"
 
+[node name="SettingsPanel" type="PanelContainer" parent="menu" unique_id=514522889]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -329.0
+offset_top = -279.0
+offset_right = 329.0
+offset_bottom = 279.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="menu/SettingsPanel" unique_id=454220222]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="menu/SettingsPanel/VBoxContainer" unique_id=721553055]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_fsom3")
+text = "SETTINGS	"
+horizontal_alignment = 1
+
+[node name="FullscreenCheckbox" type="CheckBox" parent="menu/SettingsPanel/VBoxContainer" unique_id=1784173247]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_fsom3")
+text = "FULLSCREEN"
+
+[node name="VolumeLabel" type="Label" parent="menu/SettingsPanel/VBoxContainer" unique_id=1561229315]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_fsom3")
+text = "VOLUME"
+horizontal_alignment = 1
+
+[node name="VolumeSlider" type="HSlider" parent="menu/SettingsPanel/VBoxContainer" unique_id=2069249067]
+layout_mode = 2
+
+[node name="BackButton" type="Button" parent="menu/SettingsPanel/VBoxContainer" unique_id=1609633977]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_fsom3")
+text = "BACK"
+
 [node name="AudioManager" type="Node" parent="." unique_id=501132004]
 script = ExtResource("6_3ovsr")
 
-[connection signal="focus_entered" from="menu/PanelContainer/MarginContainer/VBoxContainer/start" to="." method="_on_start_focus_entered"]
-[connection signal="mouse_entered" from="menu/PanelContainer/MarginContainer/VBoxContainer/start" to="." method="_on_start_mouse_entered"]
-[connection signal="pressed" from="menu/PanelContainer/MarginContainer/VBoxContainer/start" to="." method="_on_start_pressed"]
-[connection signal="focus_entered" from="menu/PanelContainer/MarginContainer/VBoxContainer/load" to="." method="_on_load_focus_entered"]
-[connection signal="mouse_entered" from="menu/PanelContainer/MarginContainer/VBoxContainer/load" to="." method="_on_load_mouse_entered"]
-[connection signal="pressed" from="menu/PanelContainer/MarginContainer/VBoxContainer/load" to="." method="_on_load_pressed"]
-[connection signal="focus_entered" from="menu/PanelContainer/MarginContainer/VBoxContainer/settings" to="." method="_on_settings_focus_entered"]
-[connection signal="mouse_entered" from="menu/PanelContainer/MarginContainer/VBoxContainer/settings" to="." method="_on_settings_mouse_entered"]
-[connection signal="pressed" from="menu/PanelContainer/MarginContainer/VBoxContainer/settings" to="." method="_on_settings_pressed"]
-[connection signal="focus_entered" from="menu/PanelContainer/MarginContainer/VBoxContainer/controls" to="." method="_on_controls_focus_entered"]
-[connection signal="mouse_entered" from="menu/PanelContainer/MarginContainer/VBoxContainer/controls" to="." method="_on_controls_mouse_entered"]
-[connection signal="pressed" from="menu/PanelContainer/MarginContainer/VBoxContainer/controls" to="." method="_on_controls_pressed"]
-[connection signal="focus_entered" from="menu/PanelContainer/MarginContainer/VBoxContainer/quit" to="." method="_on_quit_focus_entered"]
-[connection signal="mouse_entered" from="menu/PanelContainer/MarginContainer/VBoxContainer/quit" to="." method="_on_quit_mouse_entered"]
-[connection signal="pressed" from="menu/PanelContainer/MarginContainer/VBoxContainer/quit" to="." method="_on_quit_pressed"]
+[connection signal="focus_entered" from="menu/MainPanel/MarginContainer/VBoxContainer/start" to="." method="_on_start_focus_entered"]
+[connection signal="mouse_entered" from="menu/MainPanel/MarginContainer/VBoxContainer/start" to="." method="_on_start_mouse_entered"]
+[connection signal="pressed" from="menu/MainPanel/MarginContainer/VBoxContainer/start" to="." method="_on_start_pressed"]
+[connection signal="focus_entered" from="menu/MainPanel/MarginContainer/VBoxContainer/load" to="." method="_on_load_focus_entered"]
+[connection signal="mouse_entered" from="menu/MainPanel/MarginContainer/VBoxContainer/load" to="." method="_on_load_mouse_entered"]
+[connection signal="pressed" from="menu/MainPanel/MarginContainer/VBoxContainer/load" to="." method="_on_load_pressed"]
+[connection signal="focus_entered" from="menu/MainPanel/MarginContainer/VBoxContainer/settings" to="." method="_on_settings_focus_entered"]
+[connection signal="mouse_entered" from="menu/MainPanel/MarginContainer/VBoxContainer/settings" to="." method="_on_settings_mouse_entered"]
+[connection signal="pressed" from="menu/MainPanel/MarginContainer/VBoxContainer/settings" to="." method="_on_settings_pressed"]
+[connection signal="focus_entered" from="menu/MainPanel/MarginContainer/VBoxContainer/controls" to="." method="_on_controls_focus_entered"]
+[connection signal="mouse_entered" from="menu/MainPanel/MarginContainer/VBoxContainer/controls" to="." method="_on_controls_mouse_entered"]
+[connection signal="pressed" from="menu/MainPanel/MarginContainer/VBoxContainer/controls" to="." method="_on_controls_pressed"]
+[connection signal="focus_entered" from="menu/MainPanel/MarginContainer/VBoxContainer/quit" to="." method="_on_quit_focus_entered"]
+[connection signal="mouse_entered" from="menu/MainPanel/MarginContainer/VBoxContainer/quit" to="." method="_on_quit_mouse_entered"]
+[connection signal="pressed" from="menu/MainPanel/MarginContainer/VBoxContainer/quit" to="." method="_on_quit_pressed"]
+[connection signal="focus_entered" from="menu/SettingsPanel/VBoxContainer/BackButton" to="." method="_on_back_button_focus_entered"]
+[connection signal="mouse_entered" from="menu/SettingsPanel/VBoxContainer/BackButton" to="." method="_on_back_button_mouse_entered"]
+[connection signal="pressed" from="menu/SettingsPanel/VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
