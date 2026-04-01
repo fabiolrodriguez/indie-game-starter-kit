@@ -232,6 +232,8 @@ script = ExtResource("6_3ovsr")
 [connection signal="focus_entered" from="menu/MainPanel/MarginContainer/VBoxContainer/quit" to="." method="_on_quit_focus_entered"]
 [connection signal="mouse_entered" from="menu/MainPanel/MarginContainer/VBoxContainer/quit" to="." method="_on_quit_mouse_entered"]
 [connection signal="pressed" from="menu/MainPanel/MarginContainer/VBoxContainer/quit" to="." method="_on_quit_pressed"]
+[connection signal="toggled" from="menu/SettingsPanel/MarginContainer/VBoxContainer/FullscreenCheckbox" to="." method="_on_fullscreen_checkbox_toggled"]
+[connection signal="changed" from="menu/SettingsPanel/MarginContainer/VBoxContainer/VolumeSlider" to="." method="_on_volume_slider_changed"]
 [connection signal="focus_entered" from="menu/SettingsPanel/MarginContainer/VBoxContainer/BackButton" to="." method="_on_back_button_focus_entered"]
 [connection signal="mouse_entered" from="menu/SettingsPanel/MarginContainer/VBoxContainer/BackButton" to="." method="_on_back_button_mouse_entered"]
 [connection signal="pressed" from="menu/SettingsPanel/MarginContainer/VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
