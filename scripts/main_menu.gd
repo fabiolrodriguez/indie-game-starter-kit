@@ -63,3 +63,13 @@ func _on_back_button_focus_entered() -> void:
 	AudioManager.play_hover()
 func _on_back_button_mouse_entered() -> void:
 	AudioManager.play_hover()
+
+func _on_volume_slider_changed(value) -> void:
+	AudioServer.set_bus_volume_db(0, linear_to_db(value))
+
+func _on_fullscreen_checkbox_toggled(toggled_on: bool) -> void:
+	if toggled_on:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+	else:
+		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+			
