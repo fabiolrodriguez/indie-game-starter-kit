@@ -7,6 +7,8 @@
 [ext_resource type="Texture2D" uid="uid://b2ggxfqi1v7f2" path="res://assets/textures/background/1.png" id="4_3ovsr"]
 [ext_resource type="Texture2D" uid="uid://ijvojrr57n0i" path="res://assets/textures/background/4.png" id="4_thkx5"]
 [ext_resource type="Script" uid="uid://dt6ffye8uwn5s" path="res://scripts/audio_manager.gd" id="6_3ovsr"]
+[ext_resource type="Script" uid="uid://xhwf0embwhrv" path="res://scripts/localization_manager.gd" id="8_4xg86"]
+[ext_resource type="Script" uid="uid://dohklr0erriiu" path="res://scripts/settings_manager.gd" id="8_thkx5"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1b6gl"]
 bg_color = Color(0.9607843, 0.69411767, 0.19215687, 1)
@@ -216,6 +218,12 @@ text = "BACK"
 
 [node name="AudioManager" type="Node" parent="." unique_id=501132004]
 script = ExtResource("6_3ovsr")
+
+[node name="SettingsManager" type="Node" parent="." unique_id=1504608497]
+script = ExtResource("8_thkx5")
+
+[node name="LocalizationManager" type="Node" parent="." unique_id=779767642]
+script = ExtResource("8_4xg86")
 
 [connection signal="focus_entered" from="menu/MainPanel/MarginContainer/VBoxContainer/start" to="." method="_on_start_focus_entered"]
 [connection signal="mouse_entered" from="menu/MainPanel/MarginContainer/VBoxContainer/start" to="." method="_on_start_mouse_entered"]

@@ -18,6 +18,8 @@ config/icon="res://icon.svg"
 [autoload]
 
 AudioManager="*uid://dt6ffye8uwn5s"
+LocalizationManager="*uid://xhwf0embwhrv"
+SettingsManager="*uid://dohklr0erriiu"
 
 [display]
 
