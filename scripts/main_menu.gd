@@ -10,7 +10,9 @@ extends Node2D
 var resolutions = [
 	Vector2i(1280, 720),
 	Vector2i(1600, 900),
-	Vector2i(1920, 1080)
+	Vector2i(1920, 1080),
+	Vector2i(2560, 1440),
+	Vector2i(3480, 2160)	
 ]
 
 func setup_resolution_selector():
@@ -24,7 +26,7 @@ func _ready() -> void:
 	settings_panel.visible = false
 	setup_resolution_selector()
 	start_button.grab_focus()
-
+	SettingsManager.load_settings()
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
@@ -85,12 +87,9 @@ func _on_volume_slider_changed(value) -> void:
 func _on_fullscreen_checkbox_toggled(toggled_on: bool) -> void:
 	if toggled_on:
 		SettingsManager.fscr(true)
-		#DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 	else:
 		SettingsManager.fscr(false)
-		#DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 
 func _on_option_button_item_selected(index) -> void:
 	var res = resolutions[index]
 	SettingsManager.apply_resolution(res)
-	#DisplayServer.window_set_size(res)
