@@ -5,9 +5,24 @@ extends Node2D
 @onready var start_button = $menu/MainPanel/MarginContainer/VBoxContainer/start
 @onready var back_button = $menu/SettingsPanel/MarginContainer/VBoxContainer/BackButton
 
+@onready var resolution_selector = $menu/SettingsPanel/MarginContainer/VBoxContainer/OptionButton
+
+var resolutions = [
+	Vector2i(1280, 720),
+	Vector2i(1600, 900),
+	Vector2i(1920, 1080)
+]
+
+func setup_resolution_selector():
+	resolution_selector.clear()
+
+	for res in resolutions:
+		resolution_selector.add_item("%dx%d" % [res.x, res.y])
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	settings_panel.visible = false
+	setup_resolution_selector()
 	start_button.grab_focus()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -69,7 +84,13 @@ func _on_volume_slider_changed(value) -> void:
 
 func _on_fullscreen_checkbox_toggled(toggled_on: bool) -> void:
 	if toggled_on:
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+		SettingsManager.fscr(true)
+		#DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 	else:
-		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
-			
+		SettingsManager.fscr(false)
+		#DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
+
+func _on_option_button_item_selected(index) -> void:
+	var res = resolutions[index]
+	SettingsManager.apply_resolution(res)
+	#DisplayServer.window_set_size(res)

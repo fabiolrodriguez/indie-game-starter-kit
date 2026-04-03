@@ -32,6 +32,15 @@ func load():
 	var lang = config.get_value("settings", "language", "pt_BR")
 	#Localization.set_language(lang)
 
+func apply_resolution(menu_resolution):
+	var res = menu_resolution
+
+	DisplayServer.window_set_size(res)
+	# centralizar janela
+	var screen = DisplayServer.screen_get_size()
+	var pos = (screen - res) / 2
+	DisplayServer.window_set_position(pos)
+
 func apply():
 	# volume
 	if volume <= 0:
@@ -45,6 +54,13 @@ func apply():
 	else:
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 		
+func fscr(checkbox):
+	if checkbox:
+		fullscreen = true
+	else:
+		fullscreen = false
+	apply()
+
 func _ready():
 	#load()
 	apply()		
