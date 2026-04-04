@@ -6,6 +6,13 @@ extends Node2D
 @onready var back_button = $menu/SettingsPanel/MarginContainer/VBoxContainer/BackButton
 
 @onready var resolution_selector = $menu/SettingsPanel/MarginContainer/VBoxContainer/OptionButton
+@onready var language_selector = $menu/SettingsPanel/MarginContainer/VBoxContainer/LanguageSelector
+@onready var fullscreen_checkbox = $menu/SettingsPanel/MarginContainer/VBoxContainer/FullscreenCheckbox
+@onready var volume_slider = $menu/SettingsPanel/MarginContainer/VBoxContainer/VolumeSlider
+@onready var quit_button = $menu/MainPanel/MarginContainer/VBoxContainer/quit
+@onready var settings_button = $menu/MainPanel/MarginContainer/VBoxContainer/settings
+
+var language_codes = ["pt_BR", "en_US"]
 
 var resolutions = [
 	Vector2i(1280, 720),
@@ -27,9 +34,50 @@ func _ready() -> void:
 	setup_resolution_selector()
 	start_button.grab_focus()
 	SettingsManager.load_settings()
+	setup_language_selector()
+	sync_language_selector()
+	update_texts()
+	sync_settings_ui()
+	LocalizationManager.language_changed.connect(update_texts)
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
+
+func get_language_display_name(code: String) -> String:
+	match code:
+		"pt_BR":
+			return "Português (BR)"
+		"en_US":
+			return "English"
+		_:
+			return code
+
+func setup_language_selector():
+	language_selector.clear()
+
+	for code in language_codes:
+		language_selector.add_item(get_language_display_name(code))
+		
+func sync_language_selector():
+	var index = language_codes.find(SettingsManager.language)
+
+	if index != -1:
+		language_selector.select(index)
+	else:
+		language_selector.select(0)
+		
+func update_texts():
+	start_button.text = LocalizationManager.tr_key("menu_start")
+	back_button.text = LocalizationManager.tr_key("menu_back")
+	quit_button.text = LocalizationManager.tr_key("menu_quit")
+	settings_button.text = LocalizationManager.tr_key("menu_settings")
+	# adicione outros botões aqui
+
+func sync_settings_ui():
+	fullscreen_checkbox.button_pressed = SettingsManager.fullscreen
+	volume_slider.value = SettingsManager.volume
+	resolution_selector.select(SettingsManager.resolution_index)
+	sync_language_selector()
 
 # Button Sounds and Actions
 
@@ -92,4 +140,11 @@ func _on_fullscreen_checkbox_toggled(toggled_on: bool) -> void:
 
 func _on_option_button_item_selected(index) -> void:
 	var res = resolutions[index]
-	SettingsManager.apply_resolution(res)
+	SettingsManager.set_resolution_from_value(res)
+
+func _on_language_selector_item_selected(index: int) -> void:
+	if index < 0 or index >= language_codes.size():
+		return
+	SettingsManager.language = language_codes[index]
+	SettingsManager.save()
+	SettingsManager.apply_language()
