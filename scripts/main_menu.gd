@@ -11,6 +11,7 @@ extends Node2D
 @onready var volume_slider = $menu/SettingsPanel/MarginContainer/VBoxContainer/VolumeSlider
 @onready var quit_button = $menu/MainPanel/MarginContainer/VBoxContainer/quit
 @onready var settings_button = $menu/MainPanel/MarginContainer/VBoxContainer/settings
+@onready var load_button = $menu/MainPanel/MarginContainer/VBoxContainer/load
 
 var language_codes = ["pt_BR", "en_US"]
 
@@ -39,6 +40,14 @@ func _ready() -> void:
 	update_texts()
 	sync_settings_ui()
 	LocalizationManager.language_changed.connect(update_texts)
+	
+	if SaveManager.has_save():
+		print("Existe save")
+	else:
+		print("Não existe save")
+		
+	test_save()
+	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
@@ -148,3 +157,10 @@ func _on_language_selector_item_selected(index: int) -> void:
 	SettingsManager.language = language_codes[index]
 	SettingsManager.save()
 	SettingsManager.apply_language()
+	
+
+func test_save():
+	SaveManager.set_value("profile", "player_name", "Fabio")
+	SaveManager.set_value("profile", "language", SettingsManager.language)
+	SaveManager.set_value("profile", "last_opened_menu", "main")
+	SaveManager.save_game()

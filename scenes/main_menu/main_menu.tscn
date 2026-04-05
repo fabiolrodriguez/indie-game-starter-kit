@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://dt6ffye8uwn5s" path="res://scripts/audio_manager.gd" id="6_3ovsr"]
 [ext_resource type="Script" uid="uid://xhwf0embwhrv" path="res://scripts/localization_manager.gd" id="8_4xg86"]
 [ext_resource type="Script" uid="uid://dohklr0erriiu" path="res://scripts/settings_manager.gd" id="8_thkx5"]
+[ext_resource type="Script" uid="uid://h5v1ul580ofa" path="res://scripts/save_manager.gd" id="10_x2yjq"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1b6gl"]
 bg_color = Color(0.9607843, 0.69411767, 0.19215687, 1)
@@ -273,6 +274,9 @@ script = ExtResource("8_thkx5")
 
 [node name="LocalizationManager" type="Node" parent="." unique_id=779767642]
 script = ExtResource("8_4xg86")
+
+[node name="SaveManager" type="Node" parent="." unique_id=878138570]
+script = ExtResource("10_x2yjq")
 
 [connection signal="focus_entered" from="menu/MainPanel/MarginContainer/VBoxContainer/start" to="." method="_on_start_focus_entered"]
 [connection signal="mouse_entered" from="menu/MainPanel/MarginContainer/VBoxContainer/start" to="." method="_on_start_mouse_entered"]
