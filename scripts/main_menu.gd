@@ -12,6 +12,9 @@ extends Node2D
 @onready var quit_button = $menu/MainPanel/MarginContainer/VBoxContainer/quit
 @onready var settings_button = $menu/MainPanel/MarginContainer/VBoxContainer/settings
 @onready var load_button = $menu/MainPanel/MarginContainer/VBoxContainer/load
+@onready var controls_button = $menu/MainPanel/MarginContainer/VBoxContainer/controls
+var bg_music = preload("res://assets/audio/music/piano-bg.mp3")
+
 
 var language_codes = ["pt_BR", "en_US"]
 
@@ -47,6 +50,7 @@ func _ready() -> void:
 		print("Não existe save")
 		
 	test_save()
+	AudioManager.play_bgm(bg_music)
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -55,9 +59,9 @@ func _process(delta: float) -> void:
 func get_language_display_name(code: String) -> String:
 	match code:
 		"pt_BR":
-			return "Português (BR)"
+			return "PORTUGUÊS (BR)"
 		"en_US":
-			return "English"
+			return "ENGLISH"
 		_:
 			return code
 
@@ -77,9 +81,12 @@ func sync_language_selector():
 		
 func update_texts():
 	start_button.text = LocalizationManager.tr_key("menu_start")
+	load_button.text = LocalizationManager.tr_key("menu_load")
 	back_button.text = LocalizationManager.tr_key("menu_back")
 	quit_button.text = LocalizationManager.tr_key("menu_quit")
 	settings_button.text = LocalizationManager.tr_key("menu_settings")
+	controls_button.text = LocalizationManager.tr_key("menu_controls")
+
 	# adicione outros botões aqui
 
 func sync_settings_ui():
@@ -137,10 +144,7 @@ func _on_back_button_focus_entered() -> void:
 	AudioManager.play_hover()
 func _on_back_button_mouse_entered() -> void:
 	AudioManager.play_hover()
-
-func _on_volume_slider_changed(value) -> void:
-	AudioServer.set_bus_volume_db(0, linear_to_db(value))
-
+	
 func _on_fullscreen_checkbox_toggled(toggled_on: bool) -> void:
 	if toggled_on:
 		SettingsManager.fscr(true)
@@ -157,6 +161,7 @@ func _on_language_selector_item_selected(index: int) -> void:
 	SettingsManager.language = language_codes[index]
 	SettingsManager.save()
 	SettingsManager.apply_language()
+	update_texts()
 	
 
 func test_save():
@@ -164,3 +169,9 @@ func test_save():
 	SaveManager.set_value("profile", "language", SettingsManager.language)
 	SaveManager.set_value("profile", "last_opened_menu", "main")
 	SaveManager.save_game()
+
+func _on_volume_slider_value_changed(value: float) -> void:
+	print(value)
+	SettingsManager.volume = value
+	SettingsManager.save()
+	SettingsManager.apply()

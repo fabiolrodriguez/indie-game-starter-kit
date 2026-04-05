@@ -195,33 +195,40 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="TitleLabel" type="Label" parent="menu/SettingsPanel/MarginContainer/VBoxContainer" unique_id=721553055]
-custom_minimum_size = Vector2(0, 30)
+custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
 theme_override_fonts/font = ExtResource("1_fsom3")
 text = "SETTINGS	"
 horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="VolumeLabel" type="Label" parent="menu/SettingsPanel/MarginContainer/VBoxContainer" unique_id=1561229315]
-custom_minimum_size = Vector2(0, 25)
+custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
 theme_override_fonts/font = ExtResource("1_fsom3")
 text = "VOLUME"
 horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="VolumeSlider" type="HSlider" parent="menu/SettingsPanel/MarginContainer/VBoxContainer" unique_id=2069249067]
 layout_mode = 2
+max_value = 5.0
+step = 0.5
+value = 1.0
 
 [node name="ResolutionLabel" type="Label" parent="menu/SettingsPanel/MarginContainer/VBoxContainer" unique_id=557950461]
-custom_minimum_size = Vector2(0, 25)
+custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
 theme_override_fonts/font = ExtResource("1_fsom3")
 text = "RESOLUTION"
 horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="OptionButton" type="OptionButton" parent="menu/SettingsPanel/MarginContainer/VBoxContainer" unique_id=760169461]
+custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
 theme_override_fonts/font = ExtResource("1_fsom3")
@@ -231,14 +238,16 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_rrgl4")
 alignment = 1
 
 [node name="LanguageLabel" type="Label" parent="menu/SettingsPanel/MarginContainer/VBoxContainer" unique_id=1535816958]
-custom_minimum_size = Vector2(0, 25)
+custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
 theme_override_fonts/font = ExtResource("1_fsom3")
 text = "LANGUAGE"
 horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="LanguageSelector" type="OptionButton" parent="menu/SettingsPanel/MarginContainer/VBoxContainer" unique_id=259580146]
+custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
 theme_override_fonts/font = ExtResource("1_fsom3")
@@ -248,7 +257,7 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_rrgl4")
 alignment = 1
 
 [node name="FullscreenCheckbox" type="CheckBox" parent="menu/SettingsPanel/MarginContainer/VBoxContainer" unique_id=1784173247]
-custom_minimum_size = Vector2(0, 30)
+custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
 theme_override_fonts/font = ExtResource("1_fsom3")
@@ -256,7 +265,7 @@ text = "FULLSCREEN"
 alignment = 1
 
 [node name="BackButton" type="Button" parent="menu/SettingsPanel/MarginContainer/VBoxContainer" unique_id=1609633977]
-custom_minimum_size = Vector2(0, 30)
+custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
 theme_override_fonts/font = ExtResource("1_fsom3")
@@ -293,7 +302,7 @@ script = ExtResource("10_x2yjq")
 [connection signal="focus_entered" from="menu/MainPanel/MarginContainer/VBoxContainer/quit" to="." method="_on_quit_focus_entered"]
 [connection signal="mouse_entered" from="menu/MainPanel/MarginContainer/VBoxContainer/quit" to="." method="_on_quit_mouse_entered"]
 [connection signal="pressed" from="menu/MainPanel/MarginContainer/VBoxContainer/quit" to="." method="_on_quit_pressed"]
-[connection signal="changed" from="menu/SettingsPanel/MarginContainer/VBoxContainer/VolumeSlider" to="." method="_on_volume_slider_changed"]
+[connection signal="value_changed" from="menu/SettingsPanel/MarginContainer/VBoxContainer/VolumeSlider" to="." method="_on_volume_slider_value_changed"]
 [connection signal="item_selected" from="menu/SettingsPanel/MarginContainer/VBoxContainer/OptionButton" to="." method="_on_option_button_item_selected"]
 [connection signal="item_selected" from="menu/SettingsPanel/MarginContainer/VBoxContainer/LanguageSelector" to="." method="_on_language_selector_item_selected"]
 [connection signal="toggled" from="menu/SettingsPanel/MarginContainer/VBoxContainer/FullscreenCheckbox" to="." method="_on_fullscreen_checkbox_toggled"]

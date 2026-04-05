@@ -7,13 +7,17 @@ var current_language := "pt_BR"
 var translations = {
 	"pt_BR": {
 		"menu_start": "JOGAR",
+		"menu_load": "CONTINUAR",
 		"menu_settings": "CONFIGURAÇÕES",
+		"menu_controls": "CONTROLES",
 		"menu_back": "VOLTAR",
 		"menu_quit": "SAIR",
 	},
 	"en_US": {
 		"menu_start": "START",
+		"menu_load": "LOAD",
 		"menu_settings": "SETTINGS",
+		"menu_controls": "CONTROLS",
 		"menu_back": "BACK",
 		"menu_quit": "QUIT"
 	}
