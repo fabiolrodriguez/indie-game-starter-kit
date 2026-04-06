@@ -12,6 +12,9 @@ var translations = {
 		"menu_controls": "CONTROLES",
 		"menu_back": "VOLTAR",
 		"menu_quit": "SAIR",
+		"menu_resolution": "RESOLUÇÃO",
+		"menu_fullscreen": "TELA CHEIA",
+		"menu_language": "IDIOMA",
 	},
 	"en_US": {
 		"menu_start": "START",
@@ -19,7 +22,10 @@ var translations = {
 		"menu_settings": "SETTINGS",
 		"menu_controls": "CONTROLS",
 		"menu_back": "BACK",
-		"menu_quit": "QUIT"
+		"menu_quit": "QUIT",
+		"menu_resolution": "RESOLUTION",
+		"menu_fullscreen": "FULLSCREEN",
+		"menu_language": "LANGUAGE",
 	}
 }
 

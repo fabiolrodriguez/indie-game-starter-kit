@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://xhwf0embwhrv" path="res://scripts/localization_manager.gd" id="8_4xg86"]
 [ext_resource type="Script" uid="uid://dohklr0erriiu" path="res://scripts/settings_manager.gd" id="8_thkx5"]
 [ext_resource type="Script" uid="uid://h5v1ul580ofa" path="res://scripts/save_manager.gd" id="10_x2yjq"]
+[ext_resource type="PackedScene" uid="uid://dap3o436pbq6y" path="res://scenes/pause_menu/pause_menu.tscn" id="11_lqpn7"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1b6gl"]
 bg_color = Color(0.9607843, 0.69411767, 0.19215687, 1)
@@ -74,7 +75,10 @@ border_width_bottom = 4
 border_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
 
 [node name="MainMenu" type="Node2D" unique_id=2068258826]
+process_mode = 3
 script = ExtResource("1_5seab")
+
+[node name="PauseMenu" parent="." unique_id=1909309180 instance=ExtResource("11_lqpn7")]
 
 [node name="Background" type="CanvasLayer" parent="." unique_id=1122845074]
 

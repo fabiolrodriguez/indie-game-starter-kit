@@ -13,6 +13,12 @@ extends Node2D
 @onready var settings_button = $menu/MainPanel/MarginContainer/VBoxContainer/settings
 @onready var load_button = $menu/MainPanel/MarginContainer/VBoxContainer/load
 @onready var controls_button = $menu/MainPanel/MarginContainer/VBoxContainer/controls
+@onready var settings_label = $menu/SettingsPanel/MarginContainer/VBoxContainer/TitleLabel
+@onready var resolution_label = $menu/SettingsPanel/MarginContainer/VBoxContainer/ResolutionLabel
+@onready var language_label = $menu/SettingsPanel/MarginContainer/VBoxContainer/LanguageLabel
+
+@onready var pause_menu = $PauseMenu
+
 var bg_music = preload("res://assets/audio/music/piano-bg.mp3")
 
 
@@ -86,6 +92,10 @@ func update_texts():
 	quit_button.text = LocalizationManager.tr_key("menu_quit")
 	settings_button.text = LocalizationManager.tr_key("menu_settings")
 	controls_button.text = LocalizationManager.tr_key("menu_controls")
+	resolution_label.text = LocalizationManager.tr_key("menu_resolution")
+	language_label.text = LocalizationManager.tr_key("menu_language")
+	settings_label.text = LocalizationManager.tr_key("menu_settings")
+	fullscreen_checkbox.text = LocalizationManager.tr_key("menu_fullscreen")
 
 	# adicione outros botões aqui
 
@@ -175,3 +185,15 @@ func _on_volume_slider_value_changed(value: float) -> void:
 	SettingsManager.volume = value
 	SettingsManager.save()
 	SettingsManager.apply()
+
+func _input(event):
+	if event.is_action_pressed("ui_cancel"):
+		toggle_pause()
+	
+func toggle_pause():
+	if get_tree().paused:
+		pause_menu.resume()
+		menu_panel.visible = true
+	else:
+		pause_menu.pause()
+		menu_panel.visible = false
