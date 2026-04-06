@@ -56,7 +56,7 @@ func _ready() -> void:
 		print("Não existe save")
 		
 	test_save()
-	AudioManager.play_bgm(bg_music)
+	#AudioManager.play_bgm(bg_music)
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -96,7 +96,8 @@ func update_texts():
 	language_label.text = LocalizationManager.tr_key("menu_language")
 	settings_label.text = LocalizationManager.tr_key("menu_settings")
 	fullscreen_checkbox.text = LocalizationManager.tr_key("menu_fullscreen")
-
+	pause_menu.resume_button.text = LocalizationManager.tr_key("menu_resume")
+	pause_menu.quit_button.text = LocalizationManager.tr_key("menu_quit")
 	# adicione outros botões aqui
 
 func sync_settings_ui():

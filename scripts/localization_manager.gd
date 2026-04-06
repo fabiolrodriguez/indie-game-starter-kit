@@ -15,6 +15,7 @@ var translations = {
 		"menu_resolution": "RESOLUÇÃO",
 		"menu_fullscreen": "TELA CHEIA",
 		"menu_language": "IDIOMA",
+		"menu_resume": "CONTINUAR",
 	},
 	"en_US": {
 		"menu_start": "START",
@@ -26,6 +27,7 @@ var translations = {
 		"menu_resolution": "RESOLUTION",
 		"menu_fullscreen": "FULLSCREEN",
 		"menu_language": "LANGUAGE",
+		"menu_resume": "RESUME",
 	}
 }
 

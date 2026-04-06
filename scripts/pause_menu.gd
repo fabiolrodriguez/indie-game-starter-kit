@@ -1,21 +1,34 @@
-extends Node2D
+extends CanvasLayer
 
-@onready var pause_panel = $PauseMenu
+@onready var resume_button = $PausePanel/MarginContainer/VBoxContainer/resume
+@onready var quit_button = $PausePanel/MarginContainer/VBoxContainer/quit
 
 func _ready():
-	pause_panel.visible = false
-	
-func resume():
-	get_tree().paused = false
-	pause_panel.visible = false
-	
+	visible = false
+
 func pause():
+	visible = true
 	get_tree().paused = true
-	pause_panel.visible = true
+
+func resume():
+	AudioManager.play_click()
+	get_tree().paused = false
+	visible = false
+	get_tree().change_scene_to_file("res://scenes/main_menu/main_menu.tscn")
 
 func _on_resume_pressed() -> void:
 	resume()
 
+func _on_resume_focus_entered() -> void:
+	AudioManager.play_hover()
+
 func _on_quit_pressed() -> void:
+	AudioManager.play_click()
 	get_tree().paused = false
+	visible = false
 	get_tree().change_scene_to_file("res://scenes/main_menu/main_menu.tscn")
+
+func _on_quit_focus_entered() -> void:
+	AudioManager.play_hover()
+
+	

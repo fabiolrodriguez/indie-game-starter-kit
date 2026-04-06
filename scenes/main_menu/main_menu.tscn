@@ -78,8 +78,6 @@ border_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
 process_mode = 3
 script = ExtResource("1_5seab")
 
-[node name="PauseMenu" parent="." unique_id=1909309180 instance=ExtResource("11_lqpn7")]
-
 [node name="Background" type="CanvasLayer" parent="." unique_id=1122845074]
 
 [node name="1" type="Sprite2D" parent="Background" unique_id=1791641294]
@@ -290,6 +288,8 @@ script = ExtResource("8_4xg86")
 
 [node name="SaveManager" type="Node" parent="." unique_id=878138570]
 script = ExtResource("10_x2yjq")
+
+[node name="PauseMenu" parent="." unique_id=1909309180 instance=ExtResource("11_lqpn7")]
 
 [connection signal="focus_entered" from="menu/MainPanel/MarginContainer/VBoxContainer/start" to="." method="_on_start_focus_entered"]
 [connection signal="mouse_entered" from="menu/MainPanel/MarginContainer/VBoxContainer/start" to="." method="_on_start_mouse_entered"]

@@ -17,37 +17,40 @@ bg_color = Color(0.8117647, 0.5764706, 0.09019608, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j7hes"]
 bg_color = Color(0.99469763, 0.8058638, 0.50832, 1)
 
-[node name="PauseMenu" type="Node2D" unique_id=1909309180]
+[node name="PauseMenu" type="CanvasLayer" unique_id=264194249]
 process_mode = 3
 script = ExtResource("1_qcmsd")
 
-[node name="PauseMenu" type="CanvasLayer" parent="." unique_id=1925720054]
-process_mode = 3
+[node name="ColorRect" type="ColorRect" parent="." unique_id=734703776]
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -2.0
+offset_top = 1.0
+offset_right = 2.0
+offset_bottom = -1.0
+color = Color(0, 0, 0, 0.5686275)
 
-[node name="PausePanel" type="PanelContainer" parent="PauseMenu" unique_id=336772266]
+[node name="PausePanel" type="PanelContainer" parent="." unique_id=336772266]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -66.0
+offset_left = -104.0
 offset_top = -64.0
-offset_right = 66.0
-offset_bottom = 64.0
+offset_right = 104.0
+offset_bottom = 26.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorRect" type="ColorRect" parent="PauseMenu/PausePanel" unique_id=734703776]
-layout_mode = 2
-color = Color(0, 0, 0, 0.6392157)
-
-[node name="MarginContainer" type="MarginContainer" parent="PauseMenu/PausePanel" unique_id=480289811]
+[node name="MarginContainer" type="MarginContainer" parent="PausePanel" unique_id=480289811]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PauseMenu/PausePanel/MarginContainer" unique_id=597149446]
+[node name="VBoxContainer" type="VBoxContainer" parent="PausePanel/MarginContainer" unique_id=597149446]
 layout_mode = 2
 
-[node name="resume" type="Button" parent="PauseMenu/PausePanel/MarginContainer/VBoxContainer" unique_id=2083931942]
+[node name="resume" type="Button" parent="PausePanel/MarginContainer/VBoxContainer" unique_id=2083931942]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
@@ -58,18 +61,7 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_8squr")
 theme_override_styles/hover = SubResource("StyleBoxFlat_j7hes")
 text = "RESUME"
 
-[node name="settings" type="Button" parent="PauseMenu/PausePanel/MarginContainer/VBoxContainer" unique_id=1271927033]
-custom_minimum_size = Vector2(0, 40)
-layout_mode = 2
-theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
-theme_override_colors/font_hover_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
-theme_override_fonts/font = ExtResource("2_10tpt")
-theme_override_styles/normal = SubResource("StyleBoxFlat_0a7io")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_8squr")
-theme_override_styles/hover = SubResource("StyleBoxFlat_j7hes")
-text = "SETTINGS"
-
-[node name="quit" type="Button" parent="PauseMenu/PausePanel/MarginContainer/VBoxContainer" unique_id=476164337]
+[node name="quit" type="Button" parent="PausePanel/MarginContainer/VBoxContainer" unique_id=476164337]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
@@ -80,5 +72,7 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_8squr")
 theme_override_styles/hover = SubResource("StyleBoxFlat_j7hes")
 text = "QUIT"
 
-[connection signal="pressed" from="PauseMenu/PausePanel/MarginContainer/VBoxContainer/resume" to="PauseMenu" method="_on_resume_pressed"]
-[connection signal="pressed" from="PauseMenu/PausePanel/MarginContainer/VBoxContainer/quit" to="PauseMenu" method="_on_quit_pressed"]
+[connection signal="focus_entered" from="PausePanel/MarginContainer/VBoxContainer/resume" to="." method="_on_resume_focus_entered"]
+[connection signal="pressed" from="PausePanel/MarginContainer/VBoxContainer/resume" to="." method="_on_resume_pressed"]
+[connection signal="focus_entered" from="PausePanel/MarginContainer/VBoxContainer/quit" to="." method="_on_quit_focus_entered"]
+[connection signal="pressed" from="PausePanel/MarginContainer/VBoxContainer/quit" to="." method="_on_quit_pressed"]
