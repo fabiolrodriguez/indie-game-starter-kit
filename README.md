@@ -1,71 +1,58 @@
-# 🎮 Indie Game Starter Kit (Godot)
+# 🎮 Godot Mini Game Template
 
-Template base para criação rápida de jogos 2D com menu completo, settings, suporte a joystick e identidade visual consistente.
+![Godot](https://img.shields.io/badge/Godot-4.x-blue?logo=godot-engine)
+![Status](https://img.shields.io/badge/status-active-success)
+![License](https://img.shields.io/badge/license-MIT-green)
+
+A clean, scalable and reusable **Godot template** designed to accelerate the creation of mini games.
+
+> Build faster. Reuse more. Focus on gameplay.
 
 ---
 
-## 🎯 Objetivo
+## ✨ Why this template?
 
-Este repositório serve como ponto de partida para novos projetos do estúdio, eliminando a necessidade de recriar:
+Creating a new game from scratch every time is inefficient.
 
-- Menu inicial
-- Sistema de pausa
-- Settings (volume + fullscreen)
-- Suporte a teclado e controle
-- UI padronizada (botões, sons, fontes)
+This template gives you a **solid foundation** so you can:
 
-> 💡 Foco: começar novos jogos em minutos, não horas.
+- ⚡ Prototype faster
+- 🧠 Focus on gameplay, not boilerplate
+- 🔁 Reuse systems across multiple games
+- 🧩 Keep your architecture clean and modular
 
 ---
 
 ## 🚀 Features
 
-- ✅ Main Menu (Start / Settings / Controls / Quit)
-- ✅ Pause Menu funcional
-- ✅ Settings:
-  - Volume master
-  - Fullscreen toggle
-- ✅ Controles (teclado + joystick)
-- ✅ Navegação completa por controle
-- ✅ UI com:
-  - Hover
-  - Pressed
-  - Focus
-- ✅ Sons de interface (hover/click)
-- ✅ Transições simples
-- ✅ Estrutura de projeto organizada
+### 🖥️ Menu System
+- Fully functional main menu
+- Panel-based navigation (no scene swapping needed)
+- Keyboard/controller friendly
 
 ---
 
-## 📁 Estrutura do Projeto
+### ⚙️ Settings Manager
+- Fullscreen toggle  
+- Resolution selector  
+- Volume control  
+- Language selection  
+- Auto-save (`user://settings.cfg`)
 
-```
-res://
-├ core/
-│ ├ managers/
-│ │ ├ audio_manager.gd
-│ │ ├ scene_manager.gd
-│ │ └ config_manager.gd
-│
-├ scenes/
-│ ├ main_menu/
-│ │ ├ MainMenu.tscn
-│ │ ├ SettingsPanel.tscn
-│ │ ├ ControlsPanel.tscn
-│ │
-│ ├ game/
-│ │ ├ Level.tscn
-│ │ └ PauseMenu.tscn
-│
-├ ui/
-│ ├ components/
-│ ├ themes/
-│
-├ assets/
-│ ├ fonts/
-│ ├ icons/
-│ ├ audio/
-│ └ textures/
-│
-└ scripts/
-```
+---
+
+### 🌐 Localization System
+- Multi-language support (`pt_BR`, `en_US`)
+- Key-based translations
+- Real-time language switching
+- Automatic UI updates
+
+---
+
+### 🎮 Controls System
+- Centralized control definitions
+- Data-driven (no hardcoding)
+- Easily customizable per game
+
+```gdscript
+{"label_key": "controls_move_left", "value": "A / ←"}

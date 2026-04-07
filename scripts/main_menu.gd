@@ -19,6 +19,11 @@ extends Node2D
 
 @onready var pause_menu = $PauseMenu
 
+@onready var controls_panel = $menu/ControlsPanel
+@onready var controls_list = $menu/ControlsPanel/MarginContainer/VBoxContainer/ControlsListPanel/MarginContainer/ControlsList
+@onready var controls_title = $menu/ControlsPanel/MarginContainer/VBoxContainer/TitleLabel
+@onready var controls_back_button = $menu/ControlsPanel/MarginContainer/VBoxContainer/BackButton
+
 var bg_music = preload("res://assets/audio/music/piano-bg.mp3")
 
 
@@ -49,6 +54,8 @@ func _ready() -> void:
 	update_texts()
 	sync_settings_ui()
 	LocalizationManager.language_changed.connect(update_texts)
+	controls_panel.visible = false
+	populate_controls_panel()
 	
 	if SaveManager.has_save():
 		print("Existe save")
@@ -134,6 +141,7 @@ func _on_settings_mouse_entered() -> void:
 
 func _on_controls_pressed() -> void:
 	AudioManager.play_click()
+	open_controls_panel()
 func _on_controls_focus_entered() -> void:
 	AudioManager.play_hover()
 func _on_controls_mouse_entered() -> void:
@@ -150,6 +158,7 @@ func _on_quit_mouse_entered() -> void:
 func _on_back_button_pressed() -> void:
 	AudioManager.play_click()
 	settings_panel.visible=false
+	controls_panel.visible=false
 	menu_panel.visible=true
 func _on_back_button_focus_entered() -> void:
 	AudioManager.play_hover()
@@ -161,6 +170,8 @@ func _on_fullscreen_checkbox_toggled(toggled_on: bool) -> void:
 		SettingsManager.fscr(true)
 	else:
 		SettingsManager.fscr(false)
+		
+		
 
 func _on_option_button_item_selected(index) -> void:
 	var res = resolutions[index]
@@ -198,3 +209,35 @@ func toggle_pause():
 	else:
 		pause_menu.pause()
 		menu_panel.visible = false
+		
+func populate_controls_panel():
+	for child in controls_list.get_children():
+		child.queue_free()
+
+	var data = ControlsManager.get_controls_data()
+
+	for item in data:
+		var row = HBoxContainer.new()
+
+		var action_label = Label.new()
+		var key_label = Label.new()
+
+		action_label.text = LocalizationManager.tr_key(item["label_key"])
+		key_label.text = item["value"]
+
+		action_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		key_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+
+		row.add_child(action_label)
+		row.add_child(key_label)
+
+		controls_list.add_child(row)
+
+	controls_title.text = LocalizationManager.tr_key("controls_title")
+	controls_back_button.text = LocalizationManager.tr_key("controls_back")
+	
+func open_controls_panel():
+	menu_panel.visible = false
+	settings_panel.visible = false
+	controls_panel.visible = true
+	populate_controls_panel()

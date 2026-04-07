@@ -11,6 +11,7 @@
 [ext_resource type="Script" uid="uid://dohklr0erriiu" path="res://scripts/settings_manager.gd" id="8_thkx5"]
 [ext_resource type="Script" uid="uid://h5v1ul580ofa" path="res://scripts/save_manager.gd" id="10_x2yjq"]
 [ext_resource type="PackedScene" uid="uid://dap3o436pbq6y" path="res://scenes/pause_menu/pause_menu.tscn" id="11_lqpn7"]
+[ext_resource type="Script" uid="uid://b1eqwmdtnqpvp" path="res://scripts/controls_manager.gd" id="12_qel0l"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1b6gl"]
 bg_color = Color(0.9607843, 0.69411767, 0.19215687, 1)
@@ -73,6 +74,15 @@ border_width_top = 2
 border_width_right = 2
 border_width_bottom = 4
 border_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4ujhu"]
+bg_color = Color(0.9607843, 0.69411767, 0.19215687, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vnpsp"]
+bg_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+
+[sub_resource type="Theme" id="Theme_qel0l"]
+default_font = ExtResource("1_fsom3")
 
 [node name="MainMenu" type="Node2D" unique_id=2068258826]
 process_mode = 3
@@ -277,6 +287,65 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_lqpn7")
 theme_override_styles/hover = SubResource("StyleBoxFlat_thkx5")
 text = "BACK"
 
+[node name="ControlsPanel" type="PanelContainer" parent="menu" unique_id=274090285]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -83.0
+offset_top = -44.5
+offset_right = 83.0
+offset_bottom = 44.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_4ujhu")
+
+[node name="MarginContainer" type="MarginContainer" parent="menu/ControlsPanel" unique_id=1591637657]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="menu/ControlsPanel/MarginContainer" unique_id=1728306443]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="menu/ControlsPanel/MarginContainer/VBoxContainer" unique_id=2135189802]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+theme_override_fonts/font = ExtResource("1_fsom3")
+text = "CONTROLS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ControlsListPanel" type="PanelContainer" parent="menu/ControlsPanel/MarginContainer/VBoxContainer" unique_id=242927142]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_vnpsp")
+
+[node name="MarginContainer" type="MarginContainer" parent="menu/ControlsPanel/MarginContainer/VBoxContainer/ControlsListPanel" unique_id=390708046]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="ControlsList" type="VBoxContainer" parent="menu/ControlsPanel/MarginContainer/VBoxContainer/ControlsListPanel/MarginContainer" unique_id=740630995]
+layout_mode = 2
+theme = SubResource("Theme_qel0l")
+
+[node name="BackButton" type="Button" parent="menu/ControlsPanel/MarginContainer/VBoxContainer" unique_id=2144949437]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+theme_override_fonts/font = ExtResource("1_fsom3")
+theme_override_styles/normal = SubResource("StyleBoxFlat_5seab")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxFlat_x2yjq")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_lqpn7")
+theme_override_styles/hover = SubResource("StyleBoxFlat_thkx5")
+text = "BACK"
+
 [node name="AudioManager" type="Node" parent="." unique_id=501132004]
 script = ExtResource("6_3ovsr")
 
@@ -290,6 +359,9 @@ script = ExtResource("8_4xg86")
 script = ExtResource("10_x2yjq")
 
 [node name="PauseMenu" parent="." unique_id=1909309180 instance=ExtResource("11_lqpn7")]
+
+[node name="ControlsManager" type="Node" parent="." unique_id=1137148229]
+script = ExtResource("12_qel0l")
 
 [connection signal="focus_entered" from="menu/MainPanel/MarginContainer/VBoxContainer/start" to="." method="_on_start_focus_entered"]
 [connection signal="mouse_entered" from="menu/MainPanel/MarginContainer/VBoxContainer/start" to="." method="_on_start_mouse_entered"]
@@ -313,3 +385,4 @@ script = ExtResource("10_x2yjq")
 [connection signal="focus_entered" from="menu/SettingsPanel/MarginContainer/VBoxContainer/BackButton" to="." method="_on_back_button_focus_entered"]
 [connection signal="mouse_entered" from="menu/SettingsPanel/MarginContainer/VBoxContainer/BackButton" to="." method="_on_back_button_mouse_entered"]
 [connection signal="pressed" from="menu/SettingsPanel/MarginContainer/VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="menu/ControlsPanel/MarginContainer/VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
