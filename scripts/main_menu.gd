@@ -160,6 +160,7 @@ func _on_back_button_pressed() -> void:
 	settings_panel.visible=false
 	controls_panel.visible=false
 	menu_panel.visible=true
+	start_button.grab_focus()
 func _on_back_button_focus_entered() -> void:
 	AudioManager.play_hover()
 func _on_back_button_mouse_entered() -> void:
@@ -171,8 +172,6 @@ func _on_fullscreen_checkbox_toggled(toggled_on: bool) -> void:
 	else:
 		SettingsManager.fscr(false)
 		
-		
-
 func _on_option_button_item_selected(index) -> void:
 	var res = resolutions[index]
 	SettingsManager.set_resolution_from_value(res)
@@ -184,7 +183,6 @@ func _on_language_selector_item_selected(index: int) -> void:
 	SettingsManager.save()
 	SettingsManager.apply_language()
 	update_texts()
-	
 
 func test_save():
 	SaveManager.set_value("profile", "player_name", "Fabio")
@@ -241,3 +239,4 @@ func open_controls_panel():
 	settings_panel.visible = false
 	controls_panel.visible = true
 	populate_controls_panel()
+	controls_back_button.grab_focus()

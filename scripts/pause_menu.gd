@@ -9,6 +9,7 @@ func _ready():
 func pause():
 	visible = true
 	get_tree().paused = true
+	resume_button.grab_focus()
 
 func resume():
 	AudioManager.play_click()
