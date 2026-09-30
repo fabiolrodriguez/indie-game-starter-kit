@@ -16,6 +16,7 @@ func _ready() -> void:
 	_on_pause_changed(PauseManager.is_paused())
 
 func update_texts() -> void:
+	$PausePanel/MarginContainer/VBoxContainer/Title.text = LocalizationManager.tr_key("menu_paused")
 	resume_button.text = LocalizationManager.tr_key("menu_resume")
 	quit_button.text = LocalizationManager.tr_key("menu_quit")
 

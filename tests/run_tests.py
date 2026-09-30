@@ -9,6 +9,7 @@ import tempfile
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--godot', default='godot', help='Godot 4.6+ executable')
+parser.add_argument('--screenshots', help='Optional output directory; renders theme checks in a real window')
 args = parser.parse_args()
 source = Path(__file__).resolve().parents[1]
 
@@ -33,16 +34,26 @@ with tempfile.TemporaryDirectory(prefix='starter-kit-tests-') as temporary:
         script.write_text(content.replace(original, replacement))
     (project / 'override.cfg').write_text(
         f'\n[starter_kit]\ntesting=true\nuser_data_path="{data.as_posix()}"\n'
+        + (f'capture_dir="{Path(args.screenshots).resolve().as_posix()}"\n' if args.screenshots else '')
     )
     env = dict(os.environ, NO_COLOR='1')
     commands = [
         ('import', ['--editor', '--import', '--quit']),
         ('startup', ['--quit-after', '120']),
         ('foundation', ['res://tests/foundation_test.tscn']),
+        ('theme', ['res://tests/theme_test.tscn']),
+        ('import-cli', ['--script', 'res://ui/theme/tools/import_palette.gd', '--',
+                        str(data / 'test.hex'), str(data / 'cli_palette.tres'), 'CLI palette']),
     ]
     for name, extra in commands:
+        if name == 'theme':
+            (data / 'settings.cfg').unlink(missing_ok=True)
         command = [args.godot, '--headless', '--max-fps', '60', '--path', str(project),
                    '--log-file', str(root / f'{name}.log'), *extra]
+        if name == 'theme' and args.screenshots:
+            Path(args.screenshots).mkdir(parents=True, exist_ok=True)
+            command.remove('--headless')
+            command.extend(['--rendering-method', 'gl_compatibility', '--audio-driver', 'Dummy'])
         result = subprocess.run(command, text=True, stdout=subprocess.PIPE,
                                 stderr=subprocess.STDOUT, env=env, timeout=90)
         print(f'[{name}]\n{result.stdout}', flush=True)
@@ -50,4 +61,6 @@ with tempfile.TemporaryDirectory(prefix='starter-kit-tests-') as temporary:
             raise SystemExit(result.returncode or 1)
     if not (data / 'settings.cfg').is_file():
         raise SystemExit('Isolated persistence file was not created')
+    if 'display_name = "CLI palette"' not in (data / 'cli_palette.tres').read_text():
+        raise SystemExit('CLI importer did not save the expected palette')
     print('All isolated checks passed.')

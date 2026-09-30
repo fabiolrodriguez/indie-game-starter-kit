@@ -44,8 +44,23 @@ explicitly end/reset it. Dictionary values can be mutable; use `snapshot()` for 
 
 ## Styling and persistence
 
-The shared Theme consolidates existing colors, fonts and style boxes with variations
-for back buttons and panels. The pause overlay's translucent black remains local scene
-presentation. There is no palette editor, theme selector or theme manager in this pass.
+`ui/theme/theme_config.tres` is the single developer configuration resource.
+`ui/theme/menu_theme.tres` is generated output and the project-wide Theme
+(`gui/theme/custom`). Its `PaletteTheme` tool script rebuilds when configuration,
+`UIPalette` or `UIVisualStyle` changes. Saving the configuration does not serialize
+generated styles/icons. No extra autoload or player persistence is involved.
+
+`UIPalette` contains semantic colors; six presets live in `ui/theme/palettes/`.
+`UIVisualStyle.build(palette)` produces the supplied visual style and native control
+states. `indie_style.tres` owns typography/spacing. Future styles reuse the palette
+schema. UI inherits the Theme and uses type variations; modal/backdrop colors also
+come from semantic roles. `focus_slider.gd` adds the missing native slider focus ring.
+
+`PaletteImporter` converts five explicitly ordered HEX colors into an editable resource
+without overwriting existing palettes. `ui/theme/preview/` is a local-only component
+gallery. Selection there does not change the project configuration. Gallery, CLI tools
+and tests are excluded from the supplied export preset. See `ui/theme/README.md` for
+selection, creation, import and consumption instructions.
+
 Settings and save filenames/sections are unchanged. Volume retains its original 0–5
 range for compatibility; settings UI synchronization does not emit persistence signals.

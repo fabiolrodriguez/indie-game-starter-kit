@@ -185,11 +185,12 @@ func populate_controls_panel():
 
 	for item in data:
 		var row = HBoxContainer.new()
+		row.custom_minimum_size.y = 40
 
 		var action_label = Label.new()
 		var key_label = Label.new()
 		action_label.theme_type_variation = &"ControlsText"
-		key_label.theme_type_variation = &"ControlsText"
+		key_label.theme_type_variation = &"BindingText"
 
 		action_label.text = LocalizationManager.tr_key(item["label_key"])
 		key_label.text = item["value"]

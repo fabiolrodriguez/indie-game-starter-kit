@@ -70,3 +70,9 @@ Run isolated validation (including persistence and keyboard/controller input):
 ```sh
 python3 tests/run_tests.py --godot /path/to/Godot
 ```
+
+## Theme + Palette
+
+Choose a palette in `ui/theme/theme_config.tres` to restyle the complete UI. Six built-in
+palettes, local HEX import and a developer preview are included. See
+[Theme workflow](ui/theme/README.md). This is developer configuration, not player settings.
