@@ -32,9 +32,11 @@ func load_game() -> bool:
 	if not FileAccess.file_exists(SAVE_PATH):
 		return false
 
-	var err = config.load(SAVE_PATH)
+	var loaded := ConfigFile.new()
+	var err = loaded.load(SAVE_PATH)
 	if err != OK:
 		return false
+	config = loaded
 
 	save_data.clear()
 

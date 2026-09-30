@@ -130,6 +130,25 @@ func _run() -> void:
 	SettingsManager.set_language("en_US")
 	await check_panel_bounds(menu.controls_panel)
 	check(menu.controls_list.get_child(0).get_child(0).text == "Navigate up", "Controls localization is stale")
+	var original_controls := ControlsManager.controls_data.duplicate(true)
+	var extended_controls: Array = []
+	for index in range(20):
+		extended_controls.append({"label_key": "controls_confirm", "value": "Binding %d" % index})
+	ControlsManager.set_controls_data(extended_controls)
+	await check_panel_bounds(menu.controls_panel)
+	var scrollbar: VScrollBar = menu.controls_list.get_parent().get_v_scroll_bar()
+	check(scrollbar.visible, "Extended controls have no scrolling")
+	menu.controls_back_button.grab_focus()
+	await joy(JOY_BUTTON_DPAD_UP)
+	check(scrollbar.has_focus(), "Controller cannot reach controls scroll bar")
+	await joy(JOY_BUTTON_DPAD_DOWN)
+	check(scrollbar.value > 0, "Controller cannot scroll extended controls")
+	var first_scroll := scrollbar.value
+	await joy(JOY_BUTTON_DPAD_DOWN)
+	check(scrollbar.value > first_scroll and scrollbar.has_focus(), "Controller cannot keep scrolling")
+	await joy(JOY_BUTTON_DPAD_LEFT)
+	check(menu.controls_back_button.has_focus(), "Controller trapped on scroll bar")
+	ControlsManager.set_controls_data(original_controls)
 	await joy(JOY_BUTTON_B)
 	check(menu.menu_panel.visible, "Controller cancel did not leave controls")
 	var requests: Array = []

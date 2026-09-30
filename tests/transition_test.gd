@@ -123,6 +123,30 @@ func _run() -> void:
 	menu = get_tree().current_scene
 	check(menu.start_button.has_focus(), "Return menu navigation focus lost")
 
+	menu.settings_button.pressed.emit()
+	menu.resolution_selector.grab_focus()
+	var accept := InputEventKey.new()
+	accept.keycode = KEY_ENTER
+	accept.pressed = true
+	Input.parse_input_event(accept)
+	await get_tree().process_frame
+	accept = accept.duplicate()
+	accept.pressed = false
+	Input.parse_input_event(accept)
+	await get_tree().process_frame
+	var popup: PopupMenu = menu.resolution_selector.get_popup()
+	check(popup.visible, "Popup transition fixture did not open")
+	var popup_failure = FailingManager.new()
+	add_child(popup_failure)
+	check(popup_failure.change_scene(PROBE, options) == OK, "Popup transition rejected")
+	await input_attempts()
+	check(popup.visible and not PauseManager.is_paused(), "Popup input escaped transition blocking")
+	await popup_failure.transition_failed
+	popup.hide()
+	popup_failure.queue_free()
+	PauseManager.set_paused(false)
+	menu._on_back_button_pressed()
+
 	var original_palette = configuration.palette
 	configuration.palette = load("res://ui/theme/palettes/amber.tres")
 	check(SceneManager.change_scene(PROBE, skip) == OK, "Changed-palette request failed")
@@ -139,6 +163,13 @@ func _run() -> void:
 	check(get_viewport().is_input_disabled(), "Pre-existing input lock lost")
 	get_viewport().set_disable_input(false)
 	assert_released()
+	for invalid_duration in [NAN, INF, -INF]:
+		options.fade_duration = invalid_duration
+		check(SceneManager.change_scene(PROBE, options) == OK, "Invalid-duration recovery rejected request")
+		await SceneManager.transition_finished
+		assert_released()
+	check(SceneManager.change_scene(MENU, skip) == OK, "Return from duration validation failed")
+	await SceneManager.transition_finished
 	for size in [Vector2i(640, 360), Vector2i(1920, 1080)]:
 		get_tree().root.size = size
 		await get_tree().process_frame

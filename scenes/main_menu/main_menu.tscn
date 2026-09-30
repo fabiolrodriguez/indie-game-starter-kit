@@ -193,8 +193,15 @@ theme_type_variation = &"ControlsListPanel"
 [node name="MarginContainer" type="MarginContainer" parent="menu/ControlsPanel/MarginContainer/VBoxContainer/ControlsListPanel" unique_id=390708046]
 layout_mode = 2
 
-[node name="ControlsList" type="VBoxContainer" parent="menu/ControlsPanel/MarginContainer/VBoxContainer/ControlsListPanel/MarginContainer" unique_id=740630995]
+[node name="ControlsScroll" type="ScrollContainer" parent="menu/ControlsPanel/MarginContainer/VBoxContainer/ControlsListPanel/MarginContainer"]
+custom_minimum_size = Vector2(0, 390)
 layout_mode = 2
+horizontal_scroll_mode = 0
+follow_focus = true
+
+[node name="ControlsList" type="VBoxContainer" parent="menu/ControlsPanel/MarginContainer/VBoxContainer/ControlsListPanel/MarginContainer/ControlsScroll" unique_id=740630995]
+layout_mode = 2
+size_flags_horizontal = 3
 
 [node name="BackButton" type="Button" parent="menu/ControlsPanel/MarginContainer/VBoxContainer" unique_id=2144949437]
 custom_minimum_size = Vector2(0, 48)

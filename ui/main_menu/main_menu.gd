@@ -25,7 +25,8 @@ signal load_requested
 @onready var pause_menu = $PauseMenu
 
 @onready var controls_panel = $menu/ControlsPanel
-@onready var controls_list = $menu/ControlsPanel/MarginContainer/VBoxContainer/ControlsListPanel/MarginContainer/ControlsList
+@onready var controls_scroll = $menu/ControlsPanel/MarginContainer/VBoxContainer/ControlsListPanel/MarginContainer/ControlsScroll
+@onready var controls_list = $menu/ControlsPanel/MarginContainer/VBoxContainer/ControlsListPanel/MarginContainer/ControlsScroll/ControlsList
 @onready var controls_title = $menu/ControlsPanel/MarginContainer/VBoxContainer/TitleLabel
 @onready var controls_back_button = $menu/ControlsPanel/MarginContainer/VBoxContainer/BackButton
 
@@ -47,6 +48,13 @@ func _ready() -> void:
 	update_texts()
 	LocalizationManager.language_changed.connect(update_texts)
 	ControlsManager.controls_changed.connect(populate_controls_panel)
+	var scrollbar: VScrollBar = controls_scroll.get_v_scroll_bar()
+	scrollbar.focus_mode = Control.FOCUS_ALL
+	scrollbar.custom_step = 40.0
+	controls_back_button.focus_neighbor_top = scrollbar.get_path()
+	scrollbar.focus_neighbor_top = scrollbar.get_path()
+	scrollbar.focus_neighbor_bottom = scrollbar.get_path()
+	scrollbar.focus_neighbor_left = controls_back_button.get_path()
 	pause_menu.quit_requested.connect(_on_pause_quit_requested)
 	start_button.grab_focus()
 

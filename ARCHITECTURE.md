@@ -7,6 +7,10 @@ Theme. Existing scene paths/UIDs in `scenes/` are preserved. `game/` is the exte
 point for each game's rules and composition; `components/` is reserved for optional,
 genre-neutral behaviors. No gameplay is supplied.
 
+The Starter Kit provides genre-agnostic infrastructure. Gameplay systems belong to
+individual projects in `game/`; repeated real use may justify extracting a separate
+reusable component library. The kit is not a generalized game engine.
+
 ## Autoloads (one instance each)
 
 | System | Responsibility / extension point |
@@ -34,6 +38,8 @@ Resume only unpauses and restores focus; it never reloads a scene. The supplied 
 menu wires quit-from-pause to returning to its main panel. `pause` uses Escape / Start;
 `ui_cancel` backs out of subpanels and popups. PauseMenu handles unconsumed input and
 can disable its pause input with `handle_pause_input`. Use one pause presenter at a time.
+The main menu's controls list scrolls as games add binding descriptions. Its focused
+scroll bar uses Up/Down; Left, Tab or Cancel leave it without trapping controller focus.
 
 SceneManager returns an immediate error or OK (request accepted). Observe
 `transition_started(path)`, `transition_finished(scene)` and `transition_failed(path,error)`.
@@ -53,12 +59,13 @@ Busy requests return `ERR_BUSY`. Validation precedes covering; replacement failu
 reveal the original scene before emitting failed. Shutdown cancels the tween and releases
 input. Loading is synchronous; input polling via `Input` and scene processing continue.
 Gameplay that polls input should gate actions on `SceneManager.is_transitioning`.
+Non-finite fade durations fall back to an immediate transition.
 
 ## Styling and persistence
 
 `ui/theme/theme_config.tres` is the single developer configuration resource.
-`ui/theme/menu_theme.tres` is generated output and the project-wide Theme
-(`gui/theme/custom`). Its `PaletteTheme` tool script rebuilds when configuration,
+`ui/theme/menu_theme.tres` is the minimal script-backed project-wide Theme
+(`gui/theme/custom`). Styles/icons are generated in memory. Its `PaletteTheme` tool script rebuilds when configuration,
 `UIPalette` or `UIVisualStyle` changes. Saving the configuration does not serialize
 generated styles/icons. No extra autoload or player persistence is involved.
 
@@ -76,3 +83,24 @@ selection, creation, import and consumption instructions.
 
 Settings and save filenames/sections are unchanged. Volume retains its original 0–5
 range for compatibility; settings UI synchronization does not emit persistence signals.
+Successful reloads replace the loaded ConfigFile rather than merging old sections.
+Missing/corrupt files return an error (`false` for save loading) and preserve the last
+good in-memory state. Missing settings keys use defaults; invalid/non-finite volume
+uses 1.0. Settings setters retain automatic save/apply behavior; `save()` returns the
+disk error. Saves load only when game code requests it. Session values are never saved
+implicitly; call `start()` for a fresh session and `finish()` to clear it.
+
+## Developer Showcase
+
+Open `ui/showcase/developer_showcase.tscn` in Godot and click Run Current Scene
+(F6 on Windows/Linux, Cmd+R on macOS). This development-only
+reference composes the existing theme gallery, real manager state, ControlsManager
+bindings and PauseMenu. Use the navigation buttons with mouse, keyboard or controller.
+Foundation actions preview UI sounds/music, temporary localization, pause, default
+scene fade and the real Main Menu (including Settings/Controls). Run Current Scene opens the showcase
+again; no player-facing entry point or new autoload exists. Language/music previews
+restore on exit. Save/session state is inspected without mutation, and previews never
+write settings or saves. Real Main Menu settings retain their normal persistence.
+The palette selector affects only the embedded gallery; configuration and transitions
+continue to use `theme_config.tres`. Native scrolling/stacked cards handle smaller
+windows. Showcase, gallery, CLI tools and tests are excluded from the export preset.

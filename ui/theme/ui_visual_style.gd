@@ -139,6 +139,11 @@ func build(p: Palette) -> Theme:
 	t.set_color("caret_color", "LineEdit", p.focus)
 	t.set_color("selection_color", "LineEdit", p.primary)
 	t.set_color("font_selected_color", "LineEdit", Palette.ink_on(p.primary))
+	# Native scrolling in developer references inherits the same semantic colors.
+	t.set_stylebox("scroll", "VScrollBar", box(p.background, p.background, 0, 0, 0, 3))
+	t.set_stylebox("scroll_focus", "VScrollBar", focus_box(p.focus))
+	for state in [["grabber", p.border], ["grabber_highlight", p.primary], ["grabber_pressed", p.focus]]:
+		t.set_stylebox(state[0], "VScrollBar", box(state[1], state[1], 0, 4, 4, 3))
 	return t
 
 func variation(theme: Theme, name: StringName, base: StringName) -> void:

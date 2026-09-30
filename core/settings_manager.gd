@@ -26,12 +26,16 @@ func save() -> Error:
 	return config.save(SETTINGS_PATH)
 
 func load_settings() -> Error:
-	var err = config.load(SETTINGS_PATH)
+	# ConfigFile.load merges data and can partially parse corrupt files. Commit
+	# only a successful fresh read, preserving the last good state on failure.
+	var loaded := ConfigFile.new()
+	var err = loaded.load(SETTINGS_PATH)
 	if err != OK:
 		return err
+	config = loaded
 
 	var stored_volume = config.get_value("settings", "volume", 1.0)
-	volume = clampf(float(stored_volume), 0.0, 5.0) if (stored_volume is float or stored_volume is int) else 1.0
+	volume = _normalize_volume(stored_volume)
 	fullscreen = config.get_value("settings", "fullscreen", false) == true
 	var stored_resolution = config.get_value("settings", "resolution_index", 0)
 	resolution_index = stored_resolution if stored_resolution is int else 0
@@ -88,7 +92,7 @@ func fscr(checkbox: bool):
 	set_fullscreen(checkbox)
 
 func set_volume(value: float):
-	volume = clampf(value, 0.0, 5.0)
+	volume = _normalize_volume(value)
 	save()
 	apply()
 
@@ -101,6 +105,11 @@ func set_language(code: String):
 
 func apply_language():
 	LocalizationManager.set_language(language)
+
+func _normalize_volume(value: Variant) -> float:
+	if (value is float or value is int) and is_finite(float(value)):
+		return clampf(float(value), 0.0, 5.0)
+	return 1.0
 
 func _ready():
 	load_settings()

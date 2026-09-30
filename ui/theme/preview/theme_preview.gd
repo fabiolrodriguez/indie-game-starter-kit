@@ -7,10 +7,12 @@ const BUILT_INS := ["midnight", "forest", "ocean", "crimson", "amber", "monochro
 const FocusSlider = preload("res://ui/theme/focus_slider.gd")
 
 @export var custom_palette: Palette
+@export_range(0, 32) var content_margin := 32
 var palettes: Array[Palette] = []
 var selector: OptionButton
 var swatches: GridContainer
 var palette_title: Label
+var body: GridContainer
 
 func _ready() -> void:
 	theme_type_variation = &"Backdrop"
@@ -18,9 +20,14 @@ func _ready() -> void:
 	add_child(margin)
 	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	for side in ["left", "top", "right", "bottom"]:
-		margin.add_theme_constant_override("margin_" + side, 32)
+		margin.add_theme_constant_override("margin_" + side, content_margin)
+	var scroll := ScrollContainer.new()
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	scroll.follow_focus = true
+	margin.add_child(scroll)
 	var column := VBoxContainer.new()
-	margin.add_child(column)
+	column.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	scroll.add_child(column)
 	var header := HBoxContainer.new()
 	column.add_child(header)
 	var title := label("THEME LAB", "Title")
@@ -29,8 +36,11 @@ func _ready() -> void:
 	selector = OptionButton.new()
 	selector.custom_minimum_size.x = 240
 	header.add_child(selector)
-	column.add_child(label("Developer preview · selection here does not change your game", "MutedLabel"))
-	var body := HBoxContainer.new()
+	var description := label("Developer preview · selection here does not change your game", "MutedLabel")
+	description.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	column.add_child(description)
+	body = GridContainer.new()
+	body.columns = 2
 	body.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	column.add_child(body)
 	var controls := panel_column(body)
@@ -71,7 +81,9 @@ func _ready() -> void:
 	color_column.add_child(label("Use Tab / D-pad to inspect focus.\nHover, press and open the selector to inspect states.", "MutedLabel"))
 	for name in BUILT_INS:
 		palettes.append(load("res://ui/theme/palettes/%s.tres" % name))
-	if custom_palette:
+	if configuration.palette and not palettes.has(configuration.palette):
+		palettes.append(configuration.palette)
+	if custom_palette and not palettes.has(custom_palette):
 		palettes.append(custom_palette)
 	var selected := 0
 	for index in palettes.size():
@@ -80,7 +92,14 @@ func _ready() -> void:
 			selected = index
 	selector.item_selected.connect(select_palette)
 	select_palette(selected)
+	resized.connect(_update_columns)
+	_update_columns.call_deferred()
 	selector.grab_focus()
+
+func _update_columns() -> void:
+	# Native containers stack the same examples when embedded in a smaller panel.
+	body.columns = 2 if size.x >= 1120 else 1
+	swatches.columns = 5 if size.x >= 700 else 3
 
 func select_palette(index: int) -> void:
 	if index < 0 or index >= palettes.size():

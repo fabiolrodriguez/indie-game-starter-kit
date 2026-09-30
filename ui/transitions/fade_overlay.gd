@@ -13,6 +13,8 @@ var _exiting := false
 
 func begin(options: SceneTransitionOptions) -> void:
 	_duration = 0.0 if options.skip_visual else maxf(0.0, options.fade_duration)
+	if not is_finite(_duration):
+		_duration = 0.0
 	var tint := options.color
 	if options.use_palette_background:
 		tint = cover.get_theme_color("background", "Palette")

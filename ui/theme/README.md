@@ -8,9 +8,11 @@ Monochrome. Save the resource. This is the single selection point; the project-w
 Theme updates existing controls in the editor and at runtime. No player setting is
 written. Amber is a light palette; the others have distinct dark surface families.
 
-Open `ui/theme/preview/theme_preview.tscn` and press F6 for the developer gallery.
-Its selector changes only that preview. Assign its optional **Custom Palette** in
-the Inspector to include your own resource in the gallery.
+Open `ui/theme/preview/theme_preview.tscn` and click Run Current Scene
+(F6 on Windows/Linux, Cmd+R on macOS) for the developer gallery. Its selector changes
+only that preview. The configured palette is included automatically; optional
+**Custom Palette** adds another resource. The full developer reference lives at
+`ui/showcase/developer_showcase.tscn`.
 
 ## Create a palette
 
@@ -60,7 +62,8 @@ font; headings retain the supplied pixel font. Both can be replaced in the style
 
 ## Consume the shared Theme
 
-`menu_theme.tres` is generated output; do not edit or save its individual style boxes.
+`menu_theme.tres` is the project Theme wrapper; keep only its script reference.
+Styles/icons are generated in memory; do not commit serialized style boxes or font bytes.
 New Controls inherit it through Project Settings → GUI → Theme → Custom. Use theme
 type variations such as `PrimaryButton`, `BackButton`, `Title`, `MutedLabel`,
 `SuccessLabel`, `WarningLabel`, `DangerLabel`, `Backdrop` and `PauseOverlay`.
