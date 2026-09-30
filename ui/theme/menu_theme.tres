@@ -1,0 +1,6 @@
+[gd_resource type="Theme" script_class="PaletteTheme" load_steps=2 format=3 uid="uid://bmm401umqf0w1"]
+
+[ext_resource type="Script" uid="uid://bf3gl4lluptrx" path="res://ui/theme/palette_theme.gd" id="1"]
+
+[resource]
+script = ExtResource("1")

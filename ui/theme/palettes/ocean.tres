@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="UIPalette" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://ui/theme/ui_palette.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+display_name = "Ocean"
+background = Color(0.062745, 0.113725, 0.156863, 1)
+surface = Color(0.098039, 0.180392, 0.235294, 1)
+surface_alt = Color(0.141176, 0.258824, 0.32549, 1)
+primary = Color(0.490196, 0.780392, 0.87451, 1)
+secondary = Color(0.654902, 0.741176, 0.905882, 1)
+accent = Color(0.882353, 0.756863, 0.603922, 1)
+text_primary = Color(0.917647, 0.960784, 0.968627, 1)
+text_secondary = Color(0.670588, 0.780392, 0.831373, 1)
+text_disabled = Color(0.533333, 0.654902, 0.721569, 1)
+border = Color(0.262745, 0.396078, 0.458824, 1)
+success = Color(0.584314, 0.827451, 0.721569, 1)
+warning = Color(0.905882, 0.772549, 0.537255, 1)
+danger = Color(0.956863, 0.658824, 0.639216, 1)
+focus = Color(0.772549, 0.929412, 0.956863, 1)
+overlay = Color(0.023529, 0.062745, 0.094118, 0.86)

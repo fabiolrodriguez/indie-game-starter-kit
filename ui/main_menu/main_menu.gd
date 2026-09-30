@@ -1,5 +1,9 @@
 extends Node2D
 
+# Games connect these requests; the reusable menu owns no gameplay or save policy.
+signal start_requested
+signal load_requested
+
 @onready var menu_panel = $menu/MainPanel
 @onready var settings_panel = $menu/SettingsPanel
 @onready var start_button = $menu/MainPanel/MarginContainer/VBoxContainer/start
@@ -15,59 +19,44 @@ extends Node2D
 @onready var controls_button = $menu/MainPanel/MarginContainer/VBoxContainer/controls
 @onready var settings_label = $menu/SettingsPanel/MarginContainer/VBoxContainer/TitleLabel
 @onready var resolution_label = $menu/SettingsPanel/MarginContainer/VBoxContainer/ResolutionLabel
+@onready var volume_label = $menu/SettingsPanel/MarginContainer/VBoxContainer/VolumeLabel
 @onready var language_label = $menu/SettingsPanel/MarginContainer/VBoxContainer/LanguageLabel
 
 @onready var pause_menu = $PauseMenu
 
 @onready var controls_panel = $menu/ControlsPanel
-@onready var controls_list = $menu/ControlsPanel/MarginContainer/VBoxContainer/ControlsListPanel/MarginContainer/ControlsList
+@onready var controls_scroll = $menu/ControlsPanel/MarginContainer/VBoxContainer/ControlsListPanel/MarginContainer/ControlsScroll
+@onready var controls_list = $menu/ControlsPanel/MarginContainer/VBoxContainer/ControlsListPanel/MarginContainer/ControlsScroll/ControlsList
 @onready var controls_title = $menu/ControlsPanel/MarginContainer/VBoxContainer/TitleLabel
 @onready var controls_back_button = $menu/ControlsPanel/MarginContainer/VBoxContainer/BackButton
 
-var bg_music = preload("res://assets/audio/music/piano-bg.mp3")
-
-
-var language_codes = ["pt_BR", "en_US"]
-
-var resolutions = [
-	Vector2i(1280, 720),
-	Vector2i(1600, 900),
-	Vector2i(1920, 1080),
-	Vector2i(2560, 1440),
-	Vector2i(3480, 2160)	
-]
+var language_codes: Array = []
 
 func setup_resolution_selector():
 	resolution_selector.clear()
 
-	for res in resolutions:
+	for res in SettingsManager.resolutions:
 		resolution_selector.add_item("%dx%d" % [res.x, res.y])
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	settings_panel.visible = false
-	setup_resolution_selector()
-	start_button.grab_focus()
-	SettingsManager.load_settings()
-	setup_language_selector()
-	sync_language_selector()
-	update_texts()
-	sync_settings_ui()
-	LocalizationManager.language_changed.connect(update_texts)
 	controls_panel.visible = false
-	populate_controls_panel()
-	
-	if SaveManager.has_save():
-		print("Existe save")
-	else:
-		print("Não existe save")
-		
-	test_save()
-	#AudioManager.play_bgm(bg_music)
-	
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+	language_codes = LocalizationManager.translations.keys()
+	setup_resolution_selector()
+	setup_language_selector()
+	sync_settings_ui()
+	update_texts()
+	LocalizationManager.language_changed.connect(update_texts)
+	ControlsManager.controls_changed.connect(populate_controls_panel)
+	var scrollbar: VScrollBar = controls_scroll.get_v_scroll_bar()
+	scrollbar.focus_mode = Control.FOCUS_ALL
+	scrollbar.custom_step = 40.0
+	controls_back_button.focus_neighbor_top = scrollbar.get_path()
+	scrollbar.focus_neighbor_top = scrollbar.get_path()
+	scrollbar.focus_neighbor_bottom = scrollbar.get_path()
+	scrollbar.focus_neighbor_left = controls_back_button.get_path()
+	pause_menu.quit_requested.connect(_on_pause_quit_requested)
+	start_button.grab_focus()
 
 func get_language_display_name(code: String) -> String:
 	match code:
@@ -83,7 +72,7 @@ func setup_language_selector():
 
 	for code in language_codes:
 		language_selector.add_item(get_language_display_name(code))
-		
+
 func sync_language_selector():
 	var index = language_codes.find(SettingsManager.language)
 
@@ -91,7 +80,7 @@ func sync_language_selector():
 		language_selector.select(index)
 	else:
 		language_selector.select(0)
-		
+
 func update_texts():
 	start_button.text = LocalizationManager.tr_key("menu_start")
 	load_button.text = LocalizationManager.tr_key("menu_load")
@@ -103,13 +92,13 @@ func update_texts():
 	language_label.text = LocalizationManager.tr_key("menu_language")
 	settings_label.text = LocalizationManager.tr_key("menu_settings")
 	fullscreen_checkbox.text = LocalizationManager.tr_key("menu_fullscreen")
-	pause_menu.resume_button.text = LocalizationManager.tr_key("menu_resume")
-	pause_menu.quit_button.text = LocalizationManager.tr_key("menu_quit")
-	# adicione outros botões aqui
+	volume_label.text = LocalizationManager.tr_key("menu_volume")
+	sync_language_selector()
+	populate_controls_panel()
 
 func sync_settings_ui():
-	fullscreen_checkbox.button_pressed = SettingsManager.fullscreen
-	volume_slider.value = SettingsManager.volume
+	fullscreen_checkbox.set_pressed_no_signal(SettingsManager.fullscreen)
+	volume_slider.set_value_no_signal(SettingsManager.volume)
 	resolution_selector.select(SettingsManager.resolution_index)
 	sync_language_selector()
 
@@ -117,6 +106,7 @@ func sync_settings_ui():
 
 func _on_start_pressed() -> void:
 	AudioManager.play_click()
+	start_requested.emit()
 func _on_start_mouse_entered() -> void:
 	AudioManager.play_hover()
 func _on_start_focus_entered() -> void:
@@ -124,6 +114,7 @@ func _on_start_focus_entered() -> void:
 
 func _on_load_pressed() -> void:
 	AudioManager.play_click()
+	load_requested.emit()
 func _on_load_mouse_entered() -> void:
 	AudioManager.play_hover()
 func _on_load_focus_entered() -> void:
@@ -133,6 +124,8 @@ func _on_settings_pressed() -> void:
 	AudioManager.play_click()
 	menu_panel.visible = false
 	settings_panel.visible = true
+	pause_menu.handle_pause_input = false
+	sync_settings_ui()
 	back_button.grab_focus()
 func _on_settings_focus_entered() -> void:
 	AudioManager.play_hover()
@@ -154,76 +147,66 @@ func _on_quit_focus_entered() -> void:
 	AudioManager.play_hover()
 func _on_quit_mouse_entered() -> void:
 	AudioManager.play_hover()
-	
+
 func _on_back_button_pressed() -> void:
 	AudioManager.play_click()
-	settings_panel.visible=false
-	controls_panel.visible=false
-	menu_panel.visible=true
+	settings_panel.visible = false
+	controls_panel.visible = false
+	menu_panel.visible = true
+	pause_menu.handle_pause_input = true
 	start_button.grab_focus()
 func _on_back_button_focus_entered() -> void:
 	AudioManager.play_hover()
 func _on_back_button_mouse_entered() -> void:
 	AudioManager.play_hover()
-	
+
 func _on_fullscreen_checkbox_toggled(toggled_on: bool) -> void:
-	if toggled_on:
-		SettingsManager.fscr(true)
-	else:
-		SettingsManager.fscr(false)
-		
-func _on_option_button_item_selected(index) -> void:
-	var res = resolutions[index]
-	SettingsManager.set_resolution_from_value(res)
+	SettingsManager.set_fullscreen(toggled_on)
+
+func _on_option_button_item_selected(index: int) -> void:
+	if index >= 0 and index < SettingsManager.resolutions.size():
+		SettingsManager.set_resolution_from_value(SettingsManager.resolutions[index])
 
 func _on_language_selector_item_selected(index: int) -> void:
-	if index < 0 or index >= language_codes.size():
-		return
-	SettingsManager.language = language_codes[index]
-	SettingsManager.save()
-	SettingsManager.apply_language()
-	update_texts()
-
-func test_save():
-	SaveManager.set_value("profile", "player_name", "Fabio")
-	SaveManager.set_value("profile", "language", SettingsManager.language)
-	SaveManager.set_value("profile", "last_opened_menu", "main")
-	SaveManager.save_game()
+	if index >= 0 and index < language_codes.size():
+		SettingsManager.set_language(language_codes[index])
 
 func _on_volume_slider_value_changed(value: float) -> void:
-	print(value)
-	SettingsManager.volume = value
-	SettingsManager.save()
-	SettingsManager.apply()
+	SettingsManager.set_volume(value)
 
-func _input(event):
-	if event.is_action_pressed("ui_cancel"):
-		toggle_pause()
-	
-func toggle_pause():
-	if get_tree().paused:
-		pause_menu.resume()
-		menu_panel.visible = true
-	else:
-		pause_menu.pause()
-		menu_panel.visible = false
-		
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel") and not event.is_echo():
+		if settings_panel.visible or controls_panel.visible:
+			get_viewport().set_input_as_handled()
+			_on_back_button_pressed()
+
+func _on_pause_quit_requested() -> void:
+	pause_menu.resume()
+	_on_back_button_pressed()
+
 func populate_controls_panel():
 	for child in controls_list.get_children():
+		controls_list.remove_child(child)
 		child.queue_free()
 
 	var data = ControlsManager.get_controls_data()
 
 	for item in data:
 		var row = HBoxContainer.new()
+		row.custom_minimum_size.y = 40
 
 		var action_label = Label.new()
 		var key_label = Label.new()
+		action_label.theme_type_variation = &"ControlsText"
+		key_label.theme_type_variation = &"BindingText"
 
 		action_label.text = LocalizationManager.tr_key(item["label_key"])
 		key_label.text = item["value"]
 
 		action_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		key_label.custom_minimum_size.x = 420
+		key_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		key_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		key_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 
 		row.add_child(action_label)
@@ -233,10 +216,11 @@ func populate_controls_panel():
 
 	controls_title.text = LocalizationManager.tr_key("controls_title")
 	controls_back_button.text = LocalizationManager.tr_key("controls_back")
-	
+
 func open_controls_panel():
 	menu_panel.visible = false
 	settings_panel.visible = false
 	controls_panel.visible = true
+	pause_menu.handle_pause_input = false
 	populate_controls_panel()
 	controls_back_button.grab_focus()

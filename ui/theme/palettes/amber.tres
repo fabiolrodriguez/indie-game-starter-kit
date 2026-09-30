@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="UIPalette" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://ui/theme/ui_palette.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+display_name = "Amber"
+background = Color(0.952941, 0.929412, 0.878431, 1)
+surface = Color(1.0, 0.988235, 0.956863, 1)
+surface_alt = Color(0.901961, 0.870588, 0.796078, 1)
+primary = Color(0.47451, 0.32549, 0.14902, 1)
+secondary = Color(0.313725, 0.407843, 0.368627, 1)
+accent = Color(0.521569, 0.317647, 0.266667, 1)
+text_primary = Color(0.160784, 0.152941, 0.12549, 1)
+text_secondary = Color(0.360784, 0.345098, 0.294118, 1)
+text_disabled = Color(0.462745, 0.431373, 0.368627, 1)
+border = Color(0.662745, 0.607843, 0.501961, 1)
+success = Color(0.215686, 0.388235, 0.262745, 1)
+warning = Color(0.47451, 0.333333, 0.090196, 1)
+danger = Color(0.627451, 0.243137, 0.235294, 1)
+focus = Color(0.462745, 0.313725, 0.164706, 1)
+overlay = Color(0.141176, 0.113725, 0.078431, 0.86)
