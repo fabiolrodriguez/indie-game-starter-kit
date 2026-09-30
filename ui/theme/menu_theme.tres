@@ -1,0 +1,109 @@
+[gd_resource type="Theme" format=3]
+
+[ext_resource type="FontFile" path="res://assets/fonts/PublicPixel-rv0pA.ttf" id="1_font"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1b6gl"]
+bg_color = Color(0.9607843, 0.69411767, 0.19215687, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.9607843, 0.69411767, 0.19215687, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fsom3"]
+bg_color = Color(0.8117647, 0.5764706, 0.09019608, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0ebjn"]
+bg_color = Color(0.99469763, 0.8058638, 0.50832, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4xg86"]
+bg_color = Color(0.9607843, 0.69411767, 0.19215687, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qel0l"]
+bg_color = Color(0.9607843, 0.69411767, 0.19215687, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dn3lk"]
+bg_color = Color(0.8117647, 0.5764706, 0.09019608, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rrgl4"]
+bg_color = Color(0.99607843, 0.8039216, 0.50980395, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5seab"]
+bg_color = Color(0.9607843, 0.69411767, 0.19215687, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x2yjq"]
+bg_color = Color(0.9607843, 0.69411767, 0.19215687, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lqpn7"]
+bg_color = Color(0.8117647, 0.5764706, 0.09019608, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_thkx5"]
+bg_color = Color(0.99607843, 0.8039216, 0.50980395, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 4
+border_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4ujhu"]
+bg_color = Color(0.9607843, 0.69411767, 0.19215687, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vnpsp"]
+bg_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+
+[resource]
+default_font = ExtResource("1_font")
+Button/colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+Label/colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+OptionButton/colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+CheckBox/colors/font_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+Button/colors/font_hover_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+Button/colors/font_pressed_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+Button/colors/font_focus_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+Button/colors/font_hover_pressed_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+OptionButton/colors/font_hover_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+OptionButton/colors/font_pressed_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+OptionButton/colors/font_focus_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+OptionButton/colors/font_hover_pressed_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+CheckBox/colors/font_hover_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+CheckBox/colors/font_pressed_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+CheckBox/colors/font_focus_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+CheckBox/colors/font_hover_pressed_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+Button/styles/normal = SubResource("StyleBoxFlat_1b6gl")
+Button/styles/pressed = SubResource("StyleBoxFlat_fsom3")
+Button/styles/hover = SubResource("StyleBoxFlat_0ebjn")
+OptionButton/styles/normal = SubResource("StyleBoxFlat_qel0l")
+OptionButton/styles/pressed = SubResource("StyleBoxFlat_dn3lk")
+OptionButton/styles/hover = SubResource("StyleBoxFlat_rrgl4")
+BackButton/base_type = &"Button"
+BackButton/styles/normal = SubResource("StyleBoxFlat_5seab")
+BackButton/styles/normal_mirrored = SubResource("StyleBoxFlat_x2yjq")
+BackButton/styles/pressed = SubResource("StyleBoxFlat_lqpn7")
+BackButton/styles/hover = SubResource("StyleBoxFlat_thkx5")
+SettingsPanel/base_type = &"PanelContainer"
+SettingsPanel/styles/panel = SubResource("StyleBoxFlat_4xg86")
+ControlsPanel/base_type = &"PanelContainer"
+ControlsPanel/styles/panel = SubResource("StyleBoxFlat_4ujhu")
+ControlsListPanel/base_type = &"PanelContainer"
+ControlsListPanel/styles/panel = SubResource("StyleBoxFlat_vnpsp")
+ControlsText/base_type = &"Label"
+ControlsText/colors/font_color = Color(1, 1, 1, 1)

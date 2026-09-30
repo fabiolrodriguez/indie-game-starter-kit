@@ -55,4 +55,18 @@ This template gives you a **solid foundation** so you can:
 - Easily customizable per game
 
 ```gdscript
-{"label_key": "controls_move_left", "value": "A / ←"}
+{"label_key": "controls_move_left", "value": "A / ←"}```
+
+## Version 2.0 foundation
+
+See [ARCHITECTURE.md](ARCHITECTURE.md) for managers, menu integration and extension
+points. The kit includes generic scene transitions, transient sessions and global
+pause handling. Game rules belong in `game/`; Start/Load emit requests for game code.
+
+Requires Godot 4.6+. Open `project.godot` and run the main scene.
+
+Run isolated validation (including persistence and keyboard/controller input):
+
+```sh
+python3 tests/run_tests.py --godot /path/to/Godot
+```

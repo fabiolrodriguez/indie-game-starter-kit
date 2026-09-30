@@ -13,17 +13,19 @@ var translations = {
 		"menu_back": "VOLTAR",
 		"menu_quit": "SAIR",
 		"menu_resolution": "RESOLUÇÃO",
+		"menu_volume": "VOLUME",
 		"menu_fullscreen": "TELA CHEIA",
 		"menu_language": "IDIOMA",
 		"menu_resume": "CONTINUAR",
 		"controls_title": "CONTROLES",
 		"controls_back": "VOLTAR",
-		"controls_move_up": "Mover para a cima",
-		"controls_move_down": "Mover para a baixo",	
-		"controls_move_left": "Mover para a esquerda",
-		"controls_move_right": "Mover para a direita",
+		"controls_move_up": "Navegar para cima",
+		"controls_move_down": "Navegar para baixo",
+		"controls_move_left": "Navegar à esquerda",
+		"controls_move_right": "Navegar à direita",
 		"controls_confirm": "Confirmar",
-		"controls_pause": "Pausar"		
+		"controls_cancel": "Voltar",
+		"controls_pause": "Pausar"
 	},
 	"en_US": {
 		"menu_start": "START",
@@ -33,21 +35,25 @@ var translations = {
 		"menu_back": "BACK",
 		"menu_quit": "QUIT",
 		"menu_resolution": "RESOLUTION",
+		"menu_volume": "VOLUME",
 		"menu_fullscreen": "FULLSCREEN",
 		"menu_language": "LANGUAGE",
 		"menu_resume": "RESUME",
 		"controls_title": "CONTROLS",
 		"controls_back": "BACK",
-		"controls_move_up": "Move up",
-		"controls_move_down": "Move down",
-		"controls_move_left": "Move left",
-		"controls_move_right": "Move right",
+		"controls_move_up": "Navigate up",
+		"controls_move_down": "Navigate down",
+		"controls_move_left": "Navigate left",
+		"controls_move_right": "Navigate right",
 		"controls_confirm": "Confirm",
-		"controls_pause": "Pause"		
+		"controls_cancel": "Back",
+		"controls_pause": "Pause"
 	}
 }
 
 func set_language(lang: String):
+	if not translations.has(lang) or current_language == lang:
+		return
 	current_language = lang
 	emit_signal("language_changed")
 

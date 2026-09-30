@@ -17,7 +17,7 @@ func get_value(section: String, key: String, default_value = null):
 
 	return default_value
 
-func save_game():
+func save_game() -> Error:
 	config.clear()
 
 	for section in save_data.keys():
@@ -26,19 +26,14 @@ func save_game():
 
 	var err = config.save(SAVE_PATH)
 
-	if err == OK:
-		print("Save realizado com sucesso.")
-	else:
-		print("Erro ao salvar: ", err)
+	return err
 
 func load_game() -> bool:
 	if not FileAccess.file_exists(SAVE_PATH):
-		print("Nenhum save encontrado.")
 		return false
 
 	var err = config.load(SAVE_PATH)
 	if err != OK:
-		print("Erro ao carregar save: ", err)
 		return false
 
 	save_data.clear()
@@ -49,15 +44,16 @@ func load_game() -> bool:
 		for key in config.get_section_keys(section):
 			save_data[section][key] = config.get_value(section, key)
 
-	print("Save carregado com sucesso.")
 	return true
 
 func has_save() -> bool:
 	return FileAccess.file_exists(SAVE_PATH)
 
-func reset_save():
+func reset_save() -> Error:
 	if FileAccess.file_exists(SAVE_PATH):
-		DirAccess.remove_absolute(SAVE_PATH)
-
+		var error := DirAccess.remove_absolute(SAVE_PATH)
+		if error != OK:
+			return error
 	save_data.clear()
-	print("Save resetado.")
+	config.clear()
+	return OK
