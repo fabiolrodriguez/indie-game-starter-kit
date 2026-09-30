@@ -8,5 +8,6 @@
 - Preserve keyboard/controller navigation, focus restoration and localization, including live language changes.
 - Reuse `ui/theme/menu_theme.tres`; select the Palette in `ui/theme/theme_config.tres`. Use UIPalette semantic roles and shared Theme variations, never hardcoded UI colors. Game UI may extend the theme; read `ui/theme/README.md` first.
 - Palette selection is developer configuration, never player settings/save data. Keep the gallery/import tools outside the player flow.
+- Use `SceneManager.change_scene(path, options)` for automatic transitions. Extend the reusable presenter in `ui/transitions/`; do not add scene-local fades. Gameplay that polls `Input` should check `SceneManager.is_transitioning`.
 - Preserve existing `user://settings.cfg` and `user://savegame.cfg` formats; never write sample saves during startup.
 - Validate with Godot 4.6+ and `python3 tests/run_tests.py --godot /path/to/Godot`. Tests use a temporary project and isolated user data.

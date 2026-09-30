@@ -9,7 +9,7 @@ import tempfile
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument('--godot', default='godot', help='Godot 4.6+ executable')
-parser.add_argument('--screenshots', help='Optional output directory; renders theme checks in a real window')
+parser.add_argument('--screenshots', help='Optional output directory; renders theme and transition checks in a real window')
 args = parser.parse_args()
 source = Path(__file__).resolve().parents[1]
 
@@ -42,6 +42,7 @@ with tempfile.TemporaryDirectory(prefix='starter-kit-tests-') as temporary:
         ('startup', ['--quit-after', '120']),
         ('foundation', ['res://tests/foundation_test.tscn']),
         ('theme', ['res://tests/theme_test.tscn']),
+        ('transitions', ['res://tests/transition_test.tscn']),
         ('import-cli', ['--script', 'res://ui/theme/tools/import_palette.gd', '--',
                         str(data / 'test.hex'), str(data / 'cli_palette.tres'), 'CLI palette']),
     ]
@@ -50,7 +51,7 @@ with tempfile.TemporaryDirectory(prefix='starter-kit-tests-') as temporary:
             (data / 'settings.cfg').unlink(missing_ok=True)
         command = [args.godot, '--headless', '--max-fps', '60', '--path', str(project),
                    '--log-file', str(root / f'{name}.log'), *extra]
-        if name == 'theme' and args.screenshots:
+        if name in ('theme', 'transitions') and args.screenshots:
             Path(args.screenshots).mkdir(parents=True, exist_ok=True)
             command.remove('--headless')
             command.extend(['--rendering-method', 'gl_compatibility', '--audio-driver', 'Dummy'])

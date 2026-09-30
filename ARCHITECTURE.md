@@ -17,7 +17,7 @@ genre-neutral behaviors. No gameplay is supplied.
 | SaveManager | Generic section/key data in the existing save file; explicit load/save/reset. Save/reset return errors. Games own their schema and when to persist. |
 | ControlsManager | Descriptions from InputMap; `set_controls_data()` accepts action entries or legacy label/value entries. Does not implement gameplay input or remapping. |
 | PauseManager | Sole writer of SceneTree pause, with `set_paused()`, `toggle()`, `pause_changed`. No input or scene paths. |
-| SceneManager | `change_scene(path)` validates and defers replacement, rejects concurrent requests, unpauses on accepted replacement. |
+| SceneManager | `change_scene(path, options = null)` validates, fades, replaces and reveals; rejects concurrent requests, unpauses on successful replacement. |
 | GameSession | Transient dictionary: `start(initial_data)`, `get_value()`, `set_value()`, `snapshot()`, `finish()`. Survives scene changes; never saves automatically. |
 
 Autoload order in `project.godot` puts localization before settings and pause before
@@ -37,10 +37,22 @@ can disable its pause input with `handle_pause_input`. Use one pause presenter a
 
 SceneManager returns an immediate error or OK (request accepted). Observe
 `transition_started(path)`, `transition_finished(scene)` and `transition_failed(path,error)`.
-Hooks are notifications, not awaited animation barriers. Run an optional fade-out
-before requesting a change and fade-in on completion. Invalid requests retain the
+Hooks are notifications: started fires with input already blocked; finished fires
+after the new scene is ready, revealed and input restored. Invalid requests retain the
 current scene and pause state. Successful transitions preserve GameSession; games
 explicitly end/reset it. Dictionary values can be mutable; use `snapshot()` for a copy.
+
+SceneManager owns one persistent `ui/transitions/fade_overlay.tscn` child. The overlay
+only presents a fullscreen fade and temporarily disables root viewport input, preserving
+focus and prior input state. It runs while paused and ignores time scale. Use SceneManager
+for every scene change; extend this presenter rather than adding gameplay overlays.
+`ui/transitions/fade_options.tres` configures duration per fade (default 0.22 seconds),
+active semantic palette `background` or explicit opaque color, and `skip_visual`.
+Pass a new `SceneTransitionOptions` for a single request; options are sampled at acceptance.
+Busy requests return `ERR_BUSY`. Validation precedes covering; replacement failures
+reveal the original scene before emitting failed. Shutdown cancels the tween and releases
+input. Loading is synchronous; input polling via `Input` and scene processing continue.
+Gameplay that polls input should gate actions on `SceneManager.is_transitioning`.
 
 ## Styling and persistence
 

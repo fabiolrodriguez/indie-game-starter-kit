@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="ThemeConfiguration" load_steps=4 format=3]
+[gd_resource type="Resource" script_class="ThemeConfiguration" format=3 uid="uid://clilxlu3cys64"]
 
-[ext_resource type="Script" path="res://ui/theme/theme_configuration.gd" id="1"]
+[ext_resource type="Script" uid="uid://co3mvhcrqjtxk" path="res://ui/theme/theme_configuration.gd" id="1"]
 [ext_resource type="Resource" path="res://ui/theme/palettes/midnight.tres" id="2"]
 [ext_resource type="Resource" path="res://ui/theme/indie_style.tres" id="3"]
 
