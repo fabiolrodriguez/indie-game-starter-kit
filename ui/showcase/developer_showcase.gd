@@ -124,7 +124,7 @@ func refresh_status() -> void:
 	var values := {
 		"AudioManager": "%s · music %s" % ["UI streams ready" if AudioManager.click_sound != null and AudioManager.hover_sound != null else "UI streams missing", "playing" if AudioManager.bgm_player.playing else "stopped"],
 		"LocalizationManager": "Active: " + LocalizationManager.current_language,
-		"SettingsManager": "%s · volume %.2f · %s" % [SettingsManager.resolutions[SettingsManager.resolution_index], SettingsManager.volume, "fullscreen" if SettingsManager.fullscreen else "windowed"],
+		"SettingsManager": "%s · Master %.2f / Music %.2f / SFX %.2f · %s" % [SettingsManager.resolutions[SettingsManager.resolution_index], SettingsManager.master_volume, SettingsManager.music_volume, SettingsManager.sfx_volume, "fullscreen" if SettingsManager.fullscreen else "windowed"],
 		"ControlsManager": "%d action descriptions from InputMap" % ControlsManager.get_controls_data().size(),
 		"SaveManager": "Save file present (read only)" if SaveManager.has_save() else "No save file · not created by showcase",
 		"PauseManager": "Paused" if PauseManager.is_paused() else "Running",

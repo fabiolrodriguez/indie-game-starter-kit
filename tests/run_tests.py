@@ -54,7 +54,7 @@ with tempfile.TemporaryDirectory(prefix='starter-kit-tests-') as temporary:
             (data / 'settings.cfg').unlink(missing_ok=True)
         command = [args.godot, '--headless', '--max-fps', '60', '--path', str(project),
                    '--log-file', str(root / f'{name}.log'), *extra]
-        if name in ('theme', 'transitions', 'showcase') and args.screenshots:
+        if name in ('startup', 'foundation', 'persistence', 'theme', 'transitions', 'showcase') and args.screenshots:
             Path(args.screenshots).mkdir(parents=True, exist_ok=True)
             command.remove('--headless')
             command.extend(['--rendering-method', 'gl_compatibility', '--audio-driver', 'Dummy'])

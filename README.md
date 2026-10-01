@@ -145,6 +145,17 @@ ControlsManager displays current bindings; it does not implement input remapping
 before opening menus; read text with `tr_key()` and refresh custom UI on
 `language_changed`. Use SettingsManager for a persisted language choice.
 Reuse AudioManager's `play_click()`, `play_hover()` and `play_bgm(stream)` for playback.
+Use `play_sfx(stream)` for other effects. Music players should use the `Music` bus;
+effect players should use `SFX`. Both feed `Master`, so player preferences apply to
+your own AudioStreamPlayer/2D/3D nodes as well.
+
+Settings exposes Master, Music and SFX sliders with immediate, persistent changes.
+**Reset Audio Volumes** restores all three to 1.0 without changing display/language
+preferences. Values are linear 0–5; zero mutes the corresponding bus. Use
+`SettingsManager.set_master_volume()`, `set_music_volume()` and `set_sfx_volume()`
+for persisted preferences, or AudioManager's same-named setters for runtime-only
+bus adjustments. Existing `SettingsManager.volume` / `set_volume()` still control
+Master, and older settings files load without migration steps.
 
 See [ARCHITECTURE.md](ARCHITECTURE.md) for API responsibilities and lifecycle details.
 When using a coding agent, keep [AGENTS.md](AGENTS.md) in the project so it reuses

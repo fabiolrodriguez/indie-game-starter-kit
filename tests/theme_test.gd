@@ -71,6 +71,15 @@ func _run() -> void:
 		SettingsManager.set_language(language)
 		await capture("settings_" + language)
 		check_bounds(menu.settings_panel)
+	for size in [Vector2i(800, 720), Vector2i(1920, 1080)]:
+		get_tree().root.size = size
+		await capture("settings_%dx%d" % [size.x, size.y])
+		check_bounds(menu.settings_panel)
+		for slider in [menu.volume_slider, menu.music_volume_slider, menu.sfx_volume_slider]:
+			check(menu.settings_panel.get_global_rect().encloses(slider.get_global_rect()), "Audio slider outside Settings")
+			check(slider.get_theme_stylebox("focus", "Button") != null, "Audio slider focus style missing")
+	get_tree().root.size = Vector2i(1280, 720)
+	await get_tree().process_frame
 	menu.resolution_selector.grab_focus()
 	var accept := InputEventKey.new()
 	accept.keycode = KEY_ENTER

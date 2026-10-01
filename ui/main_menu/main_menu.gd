@@ -13,6 +13,11 @@ signal load_requested
 @onready var language_selector = $menu/SettingsPanel/MarginContainer/VBoxContainer/LanguageSelector
 @onready var fullscreen_checkbox = $menu/SettingsPanel/MarginContainer/VBoxContainer/FullscreenCheckbox
 @onready var volume_slider = $menu/SettingsPanel/MarginContainer/VBoxContainer/VolumeSlider
+@onready var music_volume_slider = $menu/SettingsPanel/MarginContainer/VBoxContainer/MusicVolumeRow/MusicVolumeSlider
+@onready var sfx_volume_slider = $menu/SettingsPanel/MarginContainer/VBoxContainer/SFXVolumeRow/SFXVolumeSlider
+@onready var music_volume_label = $menu/SettingsPanel/MarginContainer/VBoxContainer/MusicVolumeRow/MusicVolumeLabel
+@onready var sfx_volume_label = $menu/SettingsPanel/MarginContainer/VBoxContainer/SFXVolumeRow/SFXVolumeLabel
+@onready var reset_audio_button = $menu/SettingsPanel/MarginContainer/VBoxContainer/ResetAudioButton
 @onready var quit_button = $menu/MainPanel/MarginContainer/VBoxContainer/quit
 @onready var settings_button = $menu/MainPanel/MarginContainer/VBoxContainer/settings
 @onready var load_button = $menu/MainPanel/MarginContainer/VBoxContainer/load
@@ -92,13 +97,18 @@ func update_texts():
 	language_label.text = LocalizationManager.tr_key("menu_language")
 	settings_label.text = LocalizationManager.tr_key("menu_settings")
 	fullscreen_checkbox.text = LocalizationManager.tr_key("menu_fullscreen")
-	volume_label.text = LocalizationManager.tr_key("menu_volume")
+	volume_label.text = LocalizationManager.tr_key("menu_master_volume")
+	music_volume_label.text = LocalizationManager.tr_key("menu_music_volume")
+	sfx_volume_label.text = LocalizationManager.tr_key("menu_sfx_volume")
+	reset_audio_button.text = LocalizationManager.tr_key("menu_reset_audio")
 	sync_language_selector()
 	populate_controls_panel()
 
 func sync_settings_ui():
 	fullscreen_checkbox.set_pressed_no_signal(SettingsManager.fullscreen)
 	volume_slider.set_value_no_signal(SettingsManager.volume)
+	music_volume_slider.set_value_no_signal(SettingsManager.music_volume)
+	sfx_volume_slider.set_value_no_signal(SettingsManager.sfx_volume)
 	resolution_selector.select(SettingsManager.resolution_index)
 	sync_language_selector()
 
@@ -173,6 +183,28 @@ func _on_language_selector_item_selected(index: int) -> void:
 
 func _on_volume_slider_value_changed(value: float) -> void:
 	SettingsManager.set_volume(value)
+
+func _on_music_volume_slider_value_changed(value: float) -> void:
+	SettingsManager.set_music_volume(value)
+
+func _on_sfx_volume_slider_value_changed(value: float) -> void:
+	SettingsManager.set_sfx_volume(value)
+
+func _on_sfx_volume_slider_drag_ended(value_changed: bool) -> void:
+	# One existing UI sound on mouse release, never on every slider change.
+	if value_changed:
+		AudioManager.play_click()
+
+func _on_sfx_volume_slider_gui_input(event: InputEvent) -> void:
+	if event.is_action_released("ui_left") or event.is_action_released("ui_right"):
+		AudioManager.play_click()
+
+func _on_reset_audio_pressed() -> void:
+	var error := SettingsManager.reset_audio_volumes()
+	if error != OK:
+		push_warning("Could not save audio defaults: " + error_string(error))
+	sync_settings_ui()
+	AudioManager.play_click()
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel") and not event.is_echo():

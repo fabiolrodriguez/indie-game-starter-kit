@@ -1,6 +1,14 @@
 extends Node
 
-var volume := 1.0
+var master_volume := 1.0
+var music_volume := 1.0
+var sfx_volume := 1.0
+# Compatibility alias for existing projects; preferences remain linear, not dB.
+var volume: float:
+	get:
+		return master_volume
+	set(value):
+		master_volume = _normalize_volume(value)
 var fullscreen := false
 var resolution_index := 0
 
@@ -19,6 +27,9 @@ var language = "en_US"
 
 func save() -> Error:
 	config.set_value("settings", "volume", volume)
+	config.set_value("settings", "master_volume", master_volume)
+	config.set_value("settings", "music_volume", music_volume)
+	config.set_value("settings", "sfx_volume", sfx_volume)
 	config.set_value("settings", "fullscreen", fullscreen)
 	config.set_value("settings", "resolution_index", resolution_index)
 	config.set_value("settings", "language", language)
@@ -34,8 +45,10 @@ func load_settings() -> Error:
 		return err
 	config = loaded
 
-	var stored_volume = config.get_value("settings", "volume", 1.0)
-	volume = _normalize_volume(stored_volume)
+	var stored_volume = config.get_value("settings", "master_volume", config.get_value("settings", "volume", 1.0))
+	master_volume = _normalize_volume(stored_volume)
+	music_volume = _normalize_volume(config.get_value("settings", "music_volume", 1.0))
+	sfx_volume = _normalize_volume(config.get_value("settings", "sfx_volume", 1.0))
 	fullscreen = config.get_value("settings", "fullscreen", false) == true
 	var stored_resolution = config.get_value("settings", "resolution_index", 0)
 	resolution_index = stored_resolution if stored_resolution is int else 0
@@ -59,10 +72,9 @@ func apply_resolution():
 	DisplayServer.window_set_position(pos)
 
 func apply():
-	if volume <= 0:
-		AudioServer.set_bus_volume_db(0, -80)
-	else:
-		AudioServer.set_bus_volume_db(0, linear_to_db(volume))
+	AudioManager.set_master_volume(master_volume)
+	AudioManager.set_music_volume(music_volume)
+	AudioManager.set_sfx_volume(sfx_volume)
 
 	if DisplayServer.get_name() != "headless":
 		apply_window_mode()
@@ -92,9 +104,30 @@ func fscr(checkbox: bool):
 	set_fullscreen(checkbox)
 
 func set_volume(value: float):
-	volume = _normalize_volume(value)
+	set_master_volume(value)
+
+func set_master_volume(value: float):
+	master_volume = _normalize_volume(value)
 	save()
 	apply()
+
+func set_music_volume(value: float):
+	music_volume = _normalize_volume(value)
+	save()
+	apply()
+
+func set_sfx_volume(value: float):
+	sfx_volume = _normalize_volume(value)
+	save()
+	apply()
+
+func reset_audio_volumes() -> Error:
+	master_volume = 1.0
+	music_volume = 1.0
+	sfx_volume = 1.0
+	var error := save()
+	apply()
+	return error
 
 func set_language(code: String):
 	if not LocalizationManager.translations.has(code):

@@ -50,6 +50,23 @@ func joy(button: JoyButton) -> void:
 	Input.parse_input_event(event)
 	await get_tree().process_frame
 
+func mouse_button(position: Vector2, pressed: bool) -> void:
+	var event := InputEventMouseButton.new()
+	event.position = position
+	event.global_position = position
+	event.button_index = MOUSE_BUTTON_LEFT
+	event.pressed = pressed
+	Input.parse_input_event(event)
+	await get_tree().process_frame
+
+func mouse_move(position: Vector2, dragging: bool = false) -> void:
+	var event := InputEventMouseMotion.new()
+	event.position = position
+	event.global_position = position
+	event.button_mask = MOUSE_BUTTON_MASK_LEFT if dragging else 0
+	Input.parse_input_event(event)
+	await get_tree().process_frame
+
 func validate_connections(node: Node) -> void:
 	for info in node.get_signal_list():
 		for connection in node.get_signal_connection_list(info.name):
@@ -95,6 +112,44 @@ func _run() -> void:
 	check(not menu.resolution_selector.get_popup().visible and menu.settings_panel.visible and not PauseManager.is_paused(), "Popup cancel escaped its panel")
 
 	menu.volume_slider.value = 0.5
+	menu.music_volume_slider.value = 2.0
+	menu.sfx_volume_slider.value = 0.0
+	check(SettingsManager.music_volume == 2.0 and SettingsManager.sfx_volume == 0.0, "Category sliders did not apply settings")
+	menu.volume_slider.grab_focus()
+	await key(KEY_TAB)
+	check(menu.music_volume_slider.has_focus(), "Keyboard cannot reach Music slider")
+	await key(KEY_RIGHT)
+	check(SettingsManager.music_volume == 2.5, "Keyboard Music adjustment failed")
+	await joy(JOY_BUTTON_DPAD_DOWN)
+	check(menu.sfx_volume_slider.has_focus(), "Controller cannot reach SFX slider")
+	AudioManager.player.stream = AudioManager.hover_sound
+	await joy(JOY_BUTTON_DPAD_RIGHT)
+	check(SettingsManager.sfx_volume == 0.5, "Controller SFX adjustment failed")
+	check(AudioManager.player.stream == AudioManager.click_sound, "Controller SFX release preview missing")
+	await joy(JOY_BUTTON_DPAD_DOWN)
+	check(menu.reset_audio_button.has_focus(), "Controller cannot reach audio reset")
+	await joy(JOY_BUTTON_A)
+	check(menu.volume_slider.value == 1.0 and menu.music_volume_slider.value == 1.0 and menu.sfx_volume_slider.value == 1.0, "Audio reset did not sync sliders")
+	# Headless backends do not consistently dispatch mouse events to native Controls.
+	if DisplayServer.get_name() != "headless":
+		var slider_rect: Rect2 = menu.sfx_volume_slider.get_global_rect()
+		var drag_start := Vector2(slider_rect.position.x + slider_rect.size.x * 0.8, slider_rect.get_center().y)
+		var drag_end := Vector2(slider_rect.position.x, slider_rect.get_center().y)
+		AudioManager.player.stream = AudioManager.hover_sound
+		await mouse_move(drag_start)
+		await mouse_button(drag_start, true)
+		check(SettingsManager.sfx_volume > 1.0, "Mouse cannot adjust SFX slider")
+		await mouse_move(drag_end, true)
+		check(AudioManager.player.stream == AudioManager.hover_sound, "SFX preview repeats while dragging")
+		await mouse_button(drag_end, false)
+		check(SettingsManager.sfx_volume == 0.0 and AudioServer.is_bus_mute(AudioServer.get_bus_index("SFX")), "Mouse cannot mute SFX")
+		check(AudioManager.player.stream == AudioManager.click_sound, "SFX release preview missing")
+	menu.sfx_volume_slider.value = 0.0
+	menu.sfx_volume_slider.grab_focus()
+	AudioManager.player.stream = AudioManager.hover_sound
+	await key(KEY_RIGHT)
+	check(SettingsManager.sfx_volume == 0.5 and AudioManager.player.stream == AudioManager.click_sound, "Keyboard SFX release preview missing")
+	menu.volume_slider.value = 0.5
 	menu.language_selector.item_selected.emit(menu.language_codes.find("pt_BR"))
 	menu.resolution_selector.item_selected.emit(1)
 	menu.fullscreen_checkbox.button_pressed = true
@@ -102,6 +157,7 @@ func _run() -> void:
 	check(is_equal_approx(AudioServer.get_bus_volume_db(0), linear_to_db(0.5)), "Volume not applied")
 	check(menu.settings_button.text == "CONFIGURAÇÕES", "Live localization failed")
 	check(menu.pause_menu.resume_button.text == "CONTINUAR", "Pause localization failed")
+	check(menu.volume_label.text == "VOLUME GERAL" and menu.music_volume_label.text == "VOLUME DA MÚSICA" and menu.sfx_volume_label.text == "VOLUME DOS EFEITOS" and menu.reset_audio_button.text == "RESTAURAR VOLUMES", "Audio localization is stale")
 	await check_panel_bounds(menu.settings_panel)
 	var persisted := FileAccess.get_file_as_string(SettingsManager.SETTINGS_PATH)
 	SettingsManager.volume = 1.0
@@ -202,6 +258,7 @@ func _run() -> void:
 	SettingsManager.config.set_value("settings", "resolution_index", -99)
 	SettingsManager.config.set_value("settings", "language", "unknown")
 	SettingsManager.config.set_value("settings", "volume", "invalid")
+	SettingsManager.config.set_value("settings", "master_volume", "invalid")
 	SettingsManager.config.save(SettingsManager.SETTINGS_PATH)
 	SettingsManager.load_settings()
 	check(SettingsManager.resolution_index == 0 and SettingsManager.language == "en_US" and SettingsManager.volume == 1.0, "Invalid settings were not normalized")

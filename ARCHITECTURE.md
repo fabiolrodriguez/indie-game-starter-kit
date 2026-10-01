@@ -15,9 +15,9 @@ reusable component library. The kit is not a generalized game engine.
 
 | System | Responsibility / extension point |
 | --- | --- |
-| AudioManager | UI sounds and music playback, including while paused. Assign UI streams or pass music to `play_bgm()`. |
+| AudioManager | UI sounds/generic `play_sfx(stream)` on SFX and `play_bgm(stream)` on Music, including while paused. Applies native bus volumes. |
 | LocalizationManager | Translation dictionaries, English fallback, `language_changed`; extend `translations` before opening menus. |
-| SettingsManager | Load/apply/save display, master volume and language in the existing settings file; UI calls setters. Owns resolution options. |
+| SettingsManager | Load/apply/save display, Master/Music/SFX volumes and language in the existing settings file; UI calls setters. Owns resolution options. |
 | SaveManager | Generic section/key data in the existing save file; explicit load/save/reset. Save/reset return errors. Games own their schema and when to persist. |
 | ControlsManager | Descriptions from InputMap; `set_controls_data()` accepts action entries or legacy label/value entries. Does not implement gameplay input or remapping. |
 | PauseManager | Sole writer of SceneTree pause, with `set_paused()`, `toggle()`, `pause_changed`. No input or scene paths. |
@@ -81,12 +81,26 @@ gallery. Selection there does not change the project configuration. Gallery, CLI
 and tests are excluded from the supplied export preset. See `ui/theme/README.md` for
 selection, creation, import and consumption instructions.
 
-Settings and save filenames/sections are unchanged. Volume retains its original 0–5
-range for compatibility; settings UI synchronization does not emit persistence signals.
+Audio uses `default_bus_layout.tres`: Music and SFX both send to Master. Route game
+music players to `Music` and effects to `SFX`; native bus settings then apply without
+gameplay volume calculations. AudioManager's `set_master_volume()`, `set_music_volume()`
+and `set_sfx_volume()` apply linear 0–5 values to buses without persistence. Zero mutes
+the bus with a finite dB floor; a positive value unmutes it. Music selection and
+special mixing remain game responsibilities.
+
+Settings and save filenames/sections are unchanged. All three volumes retain the
+original 0–5 range and default to 1.0; settings UI synchronization does not emit persistence signals.
+SettingsManager's corresponding setters save/apply immediately. `reset_audio_volumes()`
+returns the save error and restores/applies only these three defaults; the Settings
+button also synchronizes the sliders. SFX adjustment plays one UI click on mouse/key/controller release.
+The legacy `volume` property and `set_volume()` remain aliases for Master. Old files
+load `volume` when `master_volume` is absent; missing Music/SFX keys default to 1.0,
+preserving existing output. New saves write `master_volume`, `music_volume`, `sfx_volume`
+and the legacy `volume` key. If both Master keys exist, `master_volume` takes precedence.
 Successful reloads replace the loaded ConfigFile rather than merging old sections.
 Missing/corrupt files return an error (`false` for save loading) and preserve the last
-good in-memory state. Missing settings keys use defaults; invalid/non-finite volume
-uses 1.0. Settings setters retain automatic save/apply behavior; `save()` returns the
+good in-memory state. Missing settings keys use defaults; invalid/non-finite volumes
+use 1.0. Settings setters retain automatic save/apply behavior; `save()` returns the
 disk error. Saves load only when game code requests it. Session values are never saved
 implicitly; call `start()` for a fresh session and `finish()` to clear it.
 
