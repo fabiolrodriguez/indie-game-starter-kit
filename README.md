@@ -157,6 +157,11 @@ for persisted preferences, or AudioManager's same-named setters for runtime-only
 bus adjustments. Existing `SettingsManager.volume` / `set_volume()` still control
 Master, and older settings files load without migration steps.
 
+No art yet? `tools/placeholder_assets/` draws placeholder sprites (characters,
+enemies, flyers, structures, tiles, projectiles, icons) in your palette, and
+never overwrites real art dropped at the same path. See
+[its README](tools/placeholder_assets/README.md).
+
 See [ARCHITECTURE.md](ARCHITECTURE.md) for API responsibilities and lifecycle details.
 When using a coding agent, keep [AGENTS.md](AGENTS.md) in the project so it reuses
 the foundation and places gameplay in the intended directories.
