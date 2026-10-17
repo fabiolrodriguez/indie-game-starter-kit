@@ -61,6 +61,13 @@ input. Loading is synchronous; input polling via `Input` and scene processing co
 Gameplay that polls input should gate actions on `SceneManager.is_transitioning`.
 Non-finite fade durations fall back to an immediate transition.
 
+## Tools
+
+`tools/placeholder_assets/` generates deterministic placeholder sprites from the
+active UI palette, for prototyping before real art exists (see its README). It
+is developer tooling: never part of the player flow, no runtime or autoload
+dependency. Generated PNGs carry a marker so the tool never overwrites real art.
+
 ## Styling and persistence
 
 `ui/theme/theme_config.tres` is the single developer configuration resource.

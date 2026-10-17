@@ -1,0 +1,14 @@
+{
+  "palette": "midnight",
+  "assets": [
+    {"type": "character", "name": "hero", "size": 32, "frames": 2},
+    {"type": "enemy", "name": "slime", "size": 24, "frames": 2},
+    {"type": "flyer", "name": "bat", "size": 16, "frames": 2},
+    {"type": "structure", "name": "tower", "size": 32},
+    {"type": "tile", "name": "grass", "size": 32, "shape": "iso"},
+    {"type": "tile", "name": "floor", "size": 16, "shape": "square"},
+    {"type": "projectile", "name": "spark", "size": 12, "frames": 2},
+    {"type": "icon", "name": "coin", "size": 16, "shape": "coin", "frames": 2},
+    {"type": "icon", "name": "health", "size": 16, "shape": "heart"}
+  ]
+}

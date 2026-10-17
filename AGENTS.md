@@ -13,3 +13,12 @@
 - Use `SceneManager.change_scene(path, options)` for automatic transitions. Extend the reusable presenter in `ui/transitions/`; do not add scene-local fades. Gameplay that polls `Input` should check `SceneManager.is_transitioning`.
 - Preserve existing `user://settings.cfg` and `user://savegame.cfg` formats; never write sample saves during startup.
 - Validate with Godot 4.6+ and `python3 tests/run_tests.py --godot /path/to/Godot`. Tests use a temporary project and isolated user data.
+
+## Assets: placeholders when no art or asset pack is given
+
+- When a task needs sprites (characters, enemies, flyers, structures, tiles, projectiles, icons) and the user supplied no art and named no asset pack, generate placeholders with `tools/placeholder_assets/make_placeholders.py` instead of drawing ad-hoc shapes in code, leaving an empty `Sprite2D`, or inventing a third-party pack. Read `tools/placeholder_assets/README.md` first.
+- If the user names an asset pack or provides art, use that; placeholders are only the fallback. Never download packs or assets without being asked.
+- List the game's placeholders in a manifest (`game/placeholders.json`) and generate from it, so they can be regenerated and later replaced one by one. Keep them under `assets/placeholders/<type>/` with stable names; code references those paths so real art can be dropped in at the same path without code changes.
+- Never pass `--force` unless the user asks to replace real art: the tool keeps any file without its placeholder marker, which protects art already in place.
+- Placeholders use the project palette (the one `ui/theme/theme_config.tres` selects); don't hardcode other colors for them. Import new PNGs (`godot --headless --import` or open the editor) and use nearest filtering for pixel art.
+- Tell the user which assets are placeholders and where to drop the real files. Run `python3 -m unittest discover -s tools/placeholder_assets -p "test_*.py"` after changing the generator.
