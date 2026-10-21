@@ -9,6 +9,9 @@
     {"type": "tile", "name": "floor", "size": 16, "shape": "square"},
     {"type": "projectile", "name": "spark", "size": 12, "frames": 2},
     {"type": "icon", "name": "coin", "size": 16, "shape": "coin", "frames": 2},
-    {"type": "icon", "name": "health", "size": 16, "shape": "heart"}
+    {"type": "icon", "name": "health", "size": 16, "shape": "heart"},
+    {"type": "voxel", "name": "cannon", "size": 32, "model": "turret", "facings": ["N", "E", "S", "W"]},
+    {"type": "voxel", "name": "beacon", "size": 32, "model": "pylon"},
+    {"type": "voxel", "name": "storage", "size": 64, "model": "tank"}
   ]
 }
