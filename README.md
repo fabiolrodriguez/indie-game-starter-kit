@@ -162,6 +162,22 @@ enemies, flyers, structures, tiles, projectiles, icons) in your palette, and
 never overwrites real art dropped at the same path. See
 [its README](tools/placeholder_assets/README.md).
 
+Want to know what the game actually does, rather than guess from the code?
+Write a **probe**: a short GDScript in `game/probes/` that opens a scene,
+presses actions on a fixed clock, reads nodes, records findings and takes
+screenshots. `tools/probe/run_probe.py` runs it in an isolated copy of the
+project, so it never touches your saves or settings. After the first run it
+starts in about a second.
+
+```sh
+python3 tools/probe/run_probe.py --godot /path/to/Godot game/probes/my_check.gd
+python3 tools/probe/run_probe.py --godot /path/to/Godot --scene res://scenes/main_menu/main_menu.tscn --windowed
+```
+
+The second command is the no-code smoke probe: it loads the scene and
+reports its tree, what has focus, and a screenshot. See
+[tools/probe/README.md](tools/probe/README.md) for the full API.
+
 See [ARCHITECTURE.md](ARCHITECTURE.md) for API responsibilities and lifecycle details.
 When using a coding agent, keep [AGENTS.md](AGENTS.md) in the project so it reuses
 the foundation and places gameplay in the intended directories.
@@ -175,7 +191,14 @@ Never launch persistence tests directly against a development project's user dat
 python3 tests/run_tests.py --godot /path/to/Godot
 ```
 
-Add `--screenshots /tmp/starter-kit-shots` for rendered checks.
+Add `--screenshots /tmp/starter-kit-shots` for rendered checks. The suite
+also runs the example probe (`tools/probe/examples/menu_navigation.gd`). The
+tool tests need no Godot:
+
+```sh
+python3 -m unittest discover -s tools/probe -p "test_*.py"
+python3 -m unittest discover -s tools/placeholder_assets -p "test_*.py"
+```
 
 On macOS, pass the executable inside the Godot application bundle, for example:
 
@@ -192,7 +215,7 @@ Install export templates matching your Godot version, then open **Project → Ex
 The supplied preset targets Windows; add or configure presets for your target platforms
 and choose your own output path. Confirm the configured Main Scene is your game entry.
 
-Keep `tests/*`, `ui/showcase/*`, `ui/theme/preview/*` and `ui/theme/tools/*` excluded
-in every player export preset. Validate the exported build as well as editor runs.
+Keep `tests/*`, `tools/*`, `game/probes/*`, `ui/showcase/*`, `ui/theme/preview/*`
+and `ui/theme/tools/*` excluded in every player export preset. Validate the exported build as well as editor runs.
 
 No repository license file is currently supplied.

@@ -14,6 +14,32 @@
 - Preserve existing `user://settings.cfg` and `user://savegame.cfg` formats; never write sample saves during startup.
 - Validate with Godot 4.6+ and `python3 tests/run_tests.py --godot /path/to/Godot`. Tests use a temporary project and isolated user data.
 
+## Probes: check behaviour instead of guessing
+
+- To learn what the game does (focus order, whether an action works, a value
+  over time, how a screen looks), write a probe in `game/probes/<question>.gd`
+  extending `SceneProbe` and run it with
+  `python3 tools/probe/run_probe.py --godot <Godot> game/probes/<question>.gd`.
+  Read `tools/probe/README.md` first. For a first look at a scene, use the
+  smoke probe: `--scene res://... --seconds 2`.
+- Never run game scenes, saves or probes directly against the project or
+  the developer's user data. Always go through `run_probe.py`; it isolates
+  user data, and the runner refuses to start otherwise. Never edit
+  `override.cfg` or storage paths to get around it.
+- Drive the game through player input (`tap_action`, `key`, `joy_button`,
+  `click_control`), and observe through the scene (`find`, `focus_path`,
+  `snapshot`). Use `check()` for what must hold and `record()` for numbers to
+  compare between runs. Seed randomness (`seed(n)`) so reruns match.
+- Run headless by default. Add `--windowed` only for screenshots or rendering
+  questions; headless runs skip screenshots and record why. Look at the
+  screenshots you take before you describe the result.
+- Report the summary line and the relevant records to the user, with failures
+  quoted. Keep probes that answered a lasting question as regression checks.
+  Promote one to `tests/` only when it guards something that must never break.
+- After changing the probe kit, run
+  `python3 -m unittest discover -s tools/probe -p "test_*.py"` and the full
+  suite, which runs the example probe.
+
 ## Assets: placeholders when no art or asset pack is given
 
 - When a task needs sprites (characters, enemies, flyers, structures, tiles, projectiles, icons) and the user supplied no art and named no asset pack, generate placeholders with `tools/placeholder_assets/make_placeholders.py` instead of drawing ad-hoc shapes in code, leaving an empty `Sprite2D`, or inventing a third-party pack. Read `tools/placeholder_assets/README.md` first.

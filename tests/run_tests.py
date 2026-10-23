@@ -46,6 +46,8 @@ with tempfile.TemporaryDirectory(prefix='starter-kit-tests-') as temporary:
         ('theme', ['res://tests/theme_test.tscn']),
         ('transitions', ['res://tests/transition_test.tscn']),
         ('showcase', ['res://tests/showcase_test.tscn']),
+        ('probe', ['--fixed-fps', '60', 'res://tools/probe/probe_runner.tscn', '--',
+                   '--probe=res://tools/probe/examples/menu_navigation.gd', f'--out={(data / "probe").as_posix()}']),
         ('import-cli', ['--script', 'res://ui/theme/tools/import_palette.gd', '--',
                         str(data / 'test.hex'), str(data / 'cli_palette.tres'), 'CLI palette']),
     ]
