@@ -68,6 +68,17 @@ active UI palette, for prototyping before real art exists (see its README). It
 is developer tooling: never part of the player flow, no runtime or autoload
 dependency. Generated PNGs carry a marker so the tool never overwrites real art.
 
+`tools/probe/` runs **probes**: `SceneProbe` scripts that drive the real game
+(scenes, fixed-clock frames, input, node reads, screenshots) and report one
+JSON result. `run_probe.py` mirrors the project into a workspace outside the
+repository, redirects user data there, and `probe_runner.tscn` refuses to
+start unless that isolation holds.
+
+- **Lifetime:** the probe node lives under the root, beside the autoloads, so
+  the scene changes it makes don't free it.
+- **Exports:** game probes go in `game/probes/`. Both folders are excluded
+  from player exports.
+
 ## Styling and persistence
 
 `ui/theme/theme_config.tres` is the single developer configuration resource.
